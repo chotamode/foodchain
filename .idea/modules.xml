@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/omo-foodchain1.iml" filepath="$PROJECT_DIR$/.idea/omo-foodchain1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/main/main.iml" filepath="$PROJECT_DIR$/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/omo-foodchain.iml" filepath="$PROJECT_DIR$/.idea/omo-foodchain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/src.iml" filepath="$PROJECT_DIR$/src/src.iml" />
+      <module fileurl="file://$PROJECT_DIR$/srcc/srcc.iml" filepath="$PROJECT_DIR$/srcc/srcc.iml" />
     </modules>
   </component>
 </project>
