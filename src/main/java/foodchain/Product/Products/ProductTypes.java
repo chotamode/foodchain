@@ -1,4 +1,4 @@
 package foodchain.Product.Products;
 
-public interface ProductType {
+public interface ProductTypes {
 }
