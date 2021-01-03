@@ -1,4 +1,9 @@
 package foodchain.product.ProductState;
 
-public class Expired implements ProductState{
+import foodchain.product.Product;
+
+public class Expired extends ProductState {
+    Expired(Product product) {
+        super(product);
+    }
 }
