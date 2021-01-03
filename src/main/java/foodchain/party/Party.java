@@ -1,5 +1,7 @@
 package foodchain.party;
 
+import foodchain.ObserverObservable.ChannelObserver;
+
 public abstract class Party implements ChannelObserver {
     private int balance;
     private final String name;

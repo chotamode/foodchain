@@ -1,10 +1,12 @@
 package foodchain.party.farmer;
 
 import foodchain.party.Party;
+import foodchain.party.PartyType;
 import foodchain.product.Product;
 import foodchain.product.Products.*;
 
 public class Farmer extends Party {
+    private static final PartyType partyType = PartyType.FARMER;
     MeatFactory meatFactory = new MeatFactory();
     MilkFactory milkFactory = new MilkFactory();
     PlantFactory plantFactory = new PlantFactory();
@@ -21,7 +23,7 @@ public class Farmer extends Party {
         return plantFactory.factoryMethod(q, plantProducts);
     }
 
-    protected Farmer(String name, int balance) {
+    public Farmer(String name, int balance) {
         super(name, balance, partyType);
     }
 }

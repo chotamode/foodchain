@@ -1,4 +1,9 @@
 package foodchain.product.ProductState;
 
-public class Present implements ProductState{
+import foodchain.product.Product;
+
+public class Present extends ProductState {
+    Present(Product product) {
+        super(product);
+    }
 }

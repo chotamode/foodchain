@@ -1,4 +1,9 @@
 package foodchain.product.ProductState;
 
-public class Made implements ProductState{
+import foodchain.product.Product;
+
+public class Made extends ProductState {
+    Made(Product product) {
+        super(product);
+    }
 }
