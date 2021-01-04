@@ -2,12 +2,30 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
-public abstract class ProductState {
-    Product product;
+import javax.print.attribute.standard.PrinterMessageFromOperator;
 
-    ProductState(Product product){
-        this.product = product;
+/**
+ * The type Product state.
+ */
+public abstract class ProductState {
+    /**
+     * The State.
+     */
+    protected String state;
+
+    /**
+     * Gets state.
+     *
+     * @return the state
+     */
+    public String getState() {
+        return state;
     }
 
-
+    /**
+     * Sets state.
+     *
+     * @param product the product
+     */
+    public abstract void setState(Product product);
 }

@@ -1,19 +1,28 @@
 package foodchain.product.Products;
 
+/**
+ * The type Plant product.
+ */
 public class PlantProduct implements ProductType{
-    private final PlantProducts plant;
+    private final PlantProducts plantProducts;
     private final float Kg;
 
+    /**
+     * Instantiates a new Plant product.
+     *
+     * @param kg    the kg
+     * @param plant the plant
+     */
     public PlantProduct(float kg, PlantProducts plant) {
-        this.plant = plant;
+        this.plantProducts = plant;
         Kg = kg;
     }
 
-    public PlantProducts getPlant() {
-        return plant;
+    public ProductTypes getProduct() {
+        return plantProducts;
     }
 
-    public float getKg() {
+    public float getQuantity() {
         return Kg;
     }
 }

@@ -1,9 +1,12 @@
 package foodchain.channels;
 
+/**
+ * The interface Party observable.
+ */
 public interface PartyObservable {
 
     /**
-     * Notify all observing parties about changes in channel.
+     * Notifies all observing parties about changes in channel.
      */
     void notifyAllParties();
 }
