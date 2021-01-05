@@ -29,7 +29,9 @@ public class MeatParametersStrategy implements ParametersStrategy{
     }
 
     public void setStorageParametersStrategy(Product product) {
-        // TO IMPLEMENT
+        product.setExpirationDate(12);
+        product.setStorageTemperature(-1);
+        product.setStorageHumidity(85);
     }
 
 

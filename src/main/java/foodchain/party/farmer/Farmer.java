@@ -46,7 +46,7 @@ public class Farmer extends Party {
     }
 
     /**
-     * Create Plant product.
+     * Create Plantw product.
      *
      * @param q             the q
      * @param plantProducts the plant products
@@ -64,5 +64,9 @@ public class Farmer extends Party {
      */
     public Farmer(String name, int balance) {
         super(name, balance, partyType);
+    }
+
+    public void sendProduct(Product product) {
+
     }
 }

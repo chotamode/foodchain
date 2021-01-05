@@ -29,8 +29,8 @@ public class PlantParametersStrategy implements ParametersStrategy{
     }
 
     public void setStorageParametersStrategy(Product product) {
-        // TO IMPLEMENT
+        product.setExpirationDate(10);
+        product.setStorageTemperature(5);
+        product.setStorageHumidity(75);
     }
-
-
 }

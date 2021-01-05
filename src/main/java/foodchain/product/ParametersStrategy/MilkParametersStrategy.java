@@ -29,7 +29,9 @@ public class MilkParametersStrategy implements ParametersStrategy{
     }
 
     public void setStorageParametersStrategy(Product product) {
-        // TO IMPLEMENT
+        product.setExpirationDate(7);
+        product.setStorageTemperature(4);
+        product.setStorageHumidity(60);
     }
 
 }

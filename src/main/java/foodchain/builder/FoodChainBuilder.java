@@ -1,6 +1,9 @@
 package foodchain.builder;
 
 //import foodchain.channels.ProductChannel;
+import foodchain.party.Party;
+import foodchain.party.Seller;
+import foodchain.party.farmer.Farmer;
 import foodchain.product.Products.MeatProducts;
 import foodchain.product.Products.MilkProducts;
 import foodchain.product.Products.PlantProducts;
@@ -30,6 +33,11 @@ public class FoodChainBuilder {
         System.out.println();
 
         //---------------------First-Scenario---------------------------
+        SellerBuilder sellerBuilder = new SellerBuilder("Ashot", 1000);
+        Seller seller = (Seller) sellerBuilder.createParty();
+        FarmerBuilder farmerBuilder = new FarmerBuilder("Brat_Ashota", 500);
+        Farmer farmer = (Farmer) farmerBuilder.createParty();
+
 
     }
 }

@@ -1,6 +1,13 @@
 package foodchain.party;
 
 import foodchain.ObserverObservable.ChannelObserver;
+import foodchain.product.Product;
+import foodchain.transactions.Transaction;
+import foodchain.transactions.TransactionType;
+
+import java.awt.event.MouseAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Party.
@@ -8,20 +15,23 @@ import foodchain.ObserverObservable.ChannelObserver;
 public abstract class Party implements ChannelObserver {
     private int balance;
     private final String name;
-    private  final PartyType partyType;
+    private final PartyType partyType;
+    private Map<Transaction, TransactionType> listOfTransactions = new HashMap<Transaction, TransactionType>();
 
     /**
      * Instantiates a new Party.
      *
-     * @param balance   the balance
      * @param name      the name
+     * @param balance   the balance
      * @param partyType the party type
      */
-    public Party(int balance, String name, PartyType partyType) {
-        this.balance = balance;
+    protected Party(String name, int balance, PartyType partyType) {
         this.name = name;
+        this.balance = balance;
         this.partyType = partyType;
     }
+
+    public abstract void sendProduct(Product product);
 
     /**
      * Gets balance.
@@ -58,19 +68,4 @@ public abstract class Party implements ChannelObserver {
     public PartyType getPartyType() {
         return partyType;
     }
-
-    /**
-     * Instantiates a new Party.
-     *
-     * @param name      the name
-     * @param balance   the balance
-     * @param partyType the party type
-     */
-    protected Party(String name, int balance, PartyType partyType) {
-        this.name = name;
-        this.balance = balance;
-
-        this.partyType = partyType;
-    }
-
 }
