@@ -5,6 +5,11 @@ package foodchain.transactions;
  */
 public enum TransactionType {
     /**
+     * Product transaction type.
+     */
+    PRODUCT,
+
+    /**
      * Money transaction type.
      */
     MONEY,
@@ -51,5 +56,5 @@ public enum TransactionType {
     /**
      * Want onion transaction type.
      */
-    WANT_ONION,
+    WANT_ONION
 }

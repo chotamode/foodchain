@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Class-template for transactions in simulation.
  */
-public abstract class Transaction{
+public abstract class  Transaction{
 
     private final Party receiver;
     private final Party sender;
@@ -118,6 +118,5 @@ public abstract class Transaction{
      * Get transaction flag of current transaction (MONEY / PRODUCT).
      * @return enum type of transaction.
      */
-    public abstract TransactionType getTransactionFlag();
-
+    public abstract TransactionType getTransactionType();
 }

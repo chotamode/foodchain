@@ -22,7 +22,11 @@ public class Product {
      * The Product state.
      */
     private String productState;
+
     private int expirationDate;
+    private int storageTemperature;
+    private int storageHumidity;
+
     private Party location;
     private final ProductType productType;
 
@@ -45,21 +49,50 @@ public class Product {
     }
 
     /**
+     * Sets storage humidity.
+     *
+     * @param storageHumidity the storage humidity
+     */
+    public void setStorageHumidity(int storageHumidity) {
+        this.storageHumidity = storageHumidity;
+    }
+
+    /**
+     * Sets storage temperature.
+     *
+     * @param storageTemperature the storage temperature
+     */
+    public void setStorageTemperature(int storageTemperature) {
+        this.storageTemperature = storageTemperature;
+    }
+
+    /**
      * Changes location of the product.
      *
      * @param product the product
      * @param to      Current location
      */
-    public void changeLocation(Product product, Party to) {}
+    public void changeLocation(Product product, Party to) {
+        //TO IMPLEMENT
+    }
 
     /**
-     * Set parameters strategy.
+     * Sets parameters strategy.
      *
      * @param parametersStrategy the parameters strategy
      */
     public void setParametersStrategy(ParametersStrategy parametersStrategy){
         this.parametersStrategy = parametersStrategy;
         this.parametersStrategy.setStorageParametersStrategy(this);
+    }
+
+    /**
+     * Sets expiration date.
+     *
+     * @param expirationDate the expiration date
+     */
+    public void setExpirationDate(int expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     /**

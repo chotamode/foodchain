@@ -15,6 +15,7 @@ public class Made extends ProductState {
     }
 
     public void setState(Product product) {
-        //TO IMPLEMENT
+        product.setProductState(state);
+        System.out.println("The product is made!");
     }
 }
