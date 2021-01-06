@@ -44,5 +44,5 @@ public class ProductChannel extends Channel {
     public void addRequest(Request request){
         notifyAllParties(request);
         this.requests.add(request);
-    };
+    }
 }

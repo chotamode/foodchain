@@ -1,11 +1,15 @@
 package foodchain.party;
 
 import foodchain.channels.Channel;
+import foodchain.channels.MoneyChannel;
 import foodchain.channels.ProductChannel;
 import foodchain.channels.util.Payment;
 import foodchain.channels.util.RP;
 import foodchain.channels.util.Request;
 import foodchain.product.Product;
+import foodchain.transactions.MoneyTransaction;
+import foodchain.transactions.ProductTransaction;
+import foodchain.transactions.Transaction;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +29,14 @@ public abstract class Party implements ChannelObserver {
     public void sendRequest(Request request, ProductChannel channel){
         if(channels.contains(channel)){
             channel.addRequest(request);
+        }else{
+            System.out.println("You don't subscribed to this channel");
+        }
+    }
+
+    public void sendMoney(Payment payment, MoneyChannel channel){
+        if(channels.contains(channel)){
+            channel.addPayment(payment);
         }else{
             System.out.println("You don't subscribed to this channel");
         }
@@ -64,8 +76,6 @@ public abstract class Party implements ChannelObserver {
         this.requests = new LinkedList<Request>();
         this.channels = new LinkedList<Channel>();
     }
-
-    public abstract void sendProduct(Product product);
 
     /**
      * Gets balance.

@@ -37,7 +37,6 @@ public class Product {
      */
     public Product(ProductType productType){
         this.productType = productType;
-
         if(this.productType.getClass().getName().equals("MeatProduct")){
             setParametersStrategy(new MeatParametersStrategy(this));
         }else if(this.productType.getClass().getName().equals("MilkProduct")){
@@ -47,6 +46,9 @@ public class Product {
         }
 
     }
+//    public Product(){
+//
+//    }
 
     /**
      * Sets storage humidity.
