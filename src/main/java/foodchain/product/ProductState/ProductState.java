@@ -27,5 +27,6 @@ public abstract class ProductState {
      *
      * @param product the product
      */
-    public abstract void setState(Product product);
+    public void setState(Product product){
+    }
 }

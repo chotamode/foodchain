@@ -29,7 +29,12 @@ public abstract class  Transaction{
         this.receiver = receiver;
         this.sender = sender;
         this.timestamp = generateTimestamp();
-        this.hashCode = generateHashCode(receiver.getPartyType().toString(), sender.getPartyType().toString());
+        if(receiver == null || sender == null){
+            this.hashCode = generateHashCode("genesis", "block");
+        }else{
+            this.hashCode = generateHashCode(receiver.getPartyType().toString(), sender.getPartyType().toString());
+        }
+
     }
 
     /**
@@ -112,6 +117,10 @@ public abstract class  Transaction{
         } catch (NullPointerException e) {
             this.previousHashCode = null;
         }
+    }
+
+    public Transaction getPreviousTransaction() {
+        return previousTransaction;
     }
 
     /**

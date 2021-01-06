@@ -8,17 +8,19 @@ import foodchain.product.Product;
  */
 public class ProductTransaction extends Transaction{
     private final Product product;
+    private final float amount;
 
     /**
      * Constructs transaction between parties.
-     *
-     * @param receiver the party which receives money/product.
+     *  @param receiver the party which receives money/product.
      * @param sender   the party which sends money/product.
      * @param product  the product
+     * @param amount
      */
-    public ProductTransaction(Party receiver, Party sender, Product product) {
+    public ProductTransaction(Party receiver, Party sender, Product product, float amount) {
         super(receiver, sender);
         this.product = product;
+        this.amount = amount;
     }
 
     /**
