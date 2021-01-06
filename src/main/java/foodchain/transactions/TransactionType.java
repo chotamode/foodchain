@@ -11,6 +11,6 @@ public enum TransactionType {
 
     MONEY,
 
-    TRANSPORT,
+    TRANSPORT
 
 }

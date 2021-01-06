@@ -1,5 +1,6 @@
 package foodchain.party;
 
+import foodchain.channels.util.Request;
 import foodchain.product.Product;
 import foodchain.transactions.ProductTransaction;
 import foodchain.transactions.Transaction;
@@ -15,7 +16,6 @@ import java.util.TreeMap;
 public class Seller extends Party{
 
     private static final PartyType partyType = PartyType.SELLER;
-    private Map<Transaction, TransactionType> listOfTransactions;
 
 
     /**
@@ -26,10 +26,17 @@ public class Seller extends Party{
      */
     public Seller(String name, int balance) {
         super(name, balance, partyType);
-        this.listOfTransactions = new HashMap<Transaction, TransactionType>();
     }
 
 
     public void sendProduct(Product product) {
+    }
+
+    @Override
+    public void processRequest(Request request) {
+        if(request.getReciever() == request.getCustomer() && request.getReciever() == this){
+            request.setCompleted();
+            return;
+        }else if()
     }
 }
