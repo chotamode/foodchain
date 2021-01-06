@@ -19,4 +19,6 @@ public interface ProductType {
      * @return the quantity
      */
     float getQuantity();
+
+    void reduce(float amount);
 }

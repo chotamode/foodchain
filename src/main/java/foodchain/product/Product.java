@@ -5,6 +5,7 @@ import foodchain.product.ParametersStrategy.MeatParametersStrategy;
 import foodchain.product.ParametersStrategy.MilkParametersStrategy;
 import foodchain.product.ParametersStrategy.ParametersStrategy;
 import foodchain.product.ParametersStrategy.PlantParametersStrategy;
+import foodchain.product.ProductState.ProductState;
 import foodchain.product.Products.MeatProduct;
 import foodchain.product.Products.PlantProduct;
 import foodchain.product.Products.ProductType;
@@ -21,7 +22,7 @@ public class Product {
     /**
      * The Product state.
      */
-    private String productState;
+    private ProductState productState;
 
     private int expirationDate;
     private int storageTemperature;
@@ -49,6 +50,10 @@ public class Product {
 //    public Product(){
 //
 //    }
+
+    public void reduce(float amount){
+        productType.reduce(amount);
+    }
 
     /**
      * Sets storage humidity.
@@ -88,47 +93,22 @@ public class Product {
         this.parametersStrategy.setStorageParametersStrategy(this);
     }
 
-    /**
-     * Sets expiration date.
-     *
-     * @param expirationDate the expiration date
-     */
     public void setExpirationDate(int expirationDate) {
         this.expirationDate = expirationDate;
     }
 
-    /**
-     * Set product state.
-     *
-     * @param state the state
-     */
-    public void setProductState(String state){
+    public void setProductState(ProductState state){
         this.productState = state;
     }
 
-    /**
-     * Gets parameters strategy.
-     *
-     * @return the parameters strategy
-     */
     public ParametersStrategy getParametersStrategy() {
         return parametersStrategy;
     }
 
-    /**
-     * Gets product state.
-     *
-     * @return the product state
-     */
-    public String getProductState() {
+    public ProductState getProductState() {
         return productState;
     }
 
-    /**
-     * Gets product type.
-     *
-     * @return the product type
-     */
     public ProductType getProductType() {
         return productType;
     }

@@ -2,15 +2,11 @@ package foodchain.channels;
 
 import foodchain.channels.util.Payment;
 import foodchain.channels.util.RP;
-import foodchain.channels.util.Request;
 import foodchain.party.ChannelObserver;
+import foodchain.transactions.MoneyTransaction;
 import foodchain.transactions.TransactionType;
 
-import java.util.List;
-
 public class MoneyChannel extends Channel{
-
-    private List<Payment> payments;
 
     public MoneyChannel(TransactionType type) {
         super(type);
@@ -36,6 +32,7 @@ public class MoneyChannel extends Channel{
 
     public void addPayment(Payment payment){
         notifyAllParties(payment);
-        this.payments.add(payment);
+        this.lastTransaction = new MoneyTransaction(payment.getReciever(),
+                payment.getSender(), payment.getMoney(), this.lastTransaction);
     };
 }

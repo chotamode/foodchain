@@ -1,5 +1,6 @@
 package foodchain.transactions;
 
+import foodchain.channels.util.RP;
 import foodchain.party.Party;
 
 import java.text.SimpleDateFormat;
@@ -11,13 +12,13 @@ import java.util.Random;
  */
 public abstract class  Transaction{
 
-    private final Party receiver;
-    private final Party sender;
-    private final String timestamp;
-    private final String hashCode;
-    private final String previousHashCode;
-    private boolean successful;
-    private final Transaction previousTransaction;
+    protected final Party receiver;
+    protected final Party sender;
+    protected final String timestamp;
+    protected final String hashCode;
+    protected final String previousHashCode;
+    protected boolean successful;
+    protected final Transaction previousTransaction;
 
 
     /**
@@ -31,7 +32,12 @@ public abstract class  Transaction{
         this.timestamp = generateTimestamp();
 
         this.previousTransaction = previousTransaction;
-        this.previousHashCode = this.previousTransaction.getHashCode();
+        if(previousTransaction == null){
+            this.previousHashCode = null;
+        }else{
+            this.previousHashCode = this.previousTransaction.getHashCode();
+        }
+
 
         if(receiver == null || sender == null){
             this.hashCode = generateHashCode("genesis", "block");
@@ -132,4 +138,6 @@ public abstract class  Transaction{
      * @return enum type of transaction.
      */
     public abstract TransactionType getTransactionType();
+
+    public abstract String toString();
 }

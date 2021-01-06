@@ -15,8 +15,8 @@ public class MoneyTransaction extends Transaction {
      * @param sender   the party which sends money/product.
      * @param money    the money
      */
-    public MoneyTransaction(Party receiver, Party sender, int money) {
-        super(receiver, sender);
+    public MoneyTransaction(Party receiver, Party sender, int money, Transaction previousTransaction) {
+        super(receiver, sender, previousTransaction);
         this.money = money;
     }
 
@@ -31,5 +31,15 @@ public class MoneyTransaction extends Transaction {
 
     public TransactionType getTransactionType() {
         return TransactionType.MONEY;
+    }
+
+    @Override
+    public String toString() {
+        return "MoneyTransaction{" +
+                "money=" + money +
+                ", receiver=" + receiver +
+                ", sender=" + sender +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
     }
 }

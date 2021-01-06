@@ -17,8 +17,8 @@ public class ProductTransaction extends Transaction{
      * @param product  the product
      * @param amount
      */
-    public ProductTransaction(Party receiver, Party sender, Product product, float amount) {
-        super(receiver, sender);
+    public ProductTransaction(Party receiver, Party sender, Product product, float amount, Transaction previousTransaction) {
+        super(receiver, sender, previousTransaction);
         this.product = product;
         this.amount = amount;
     }
@@ -34,5 +34,16 @@ public class ProductTransaction extends Transaction{
 
     public TransactionType getTransactionType() {
         return TransactionType.PRODUCT;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductTransaction{" +
+                "product=" + product +
+                ", amount=" + amount +
+                ", receiver=" + receiver +
+                ", sender=" + sender +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
     }
 }
