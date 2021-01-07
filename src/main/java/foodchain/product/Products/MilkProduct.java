@@ -5,7 +5,7 @@ package foodchain.product.Products;
  */
 public class MilkProduct implements ProductType{
     private final MilkProducts milkProducts;
-    private final float Liters;
+    private float Liters;
 
     /**
      * Instantiates a new Milk product.
@@ -25,5 +25,10 @@ public class MilkProduct implements ProductType{
 
     public float getQuantity() {
         return Liters;
+    }
+
+    @Override
+    public void reduce(float amount) {
+        this.Liters = Liters - amount;
     }
 }

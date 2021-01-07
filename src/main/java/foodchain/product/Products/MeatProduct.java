@@ -5,7 +5,7 @@ package foodchain.product.Products;
  */
 public class MeatProduct implements ProductType{
     private final MeatProducts meatProducts;
-    private final float Kg;
+    private float Kg;
 
     /**
      * Instantiates a new Meat product.
@@ -24,5 +24,10 @@ public class MeatProduct implements ProductType{
 
     public float getQuantity() {
         return Kg;
+    }
+
+    @Override
+    public void reduce(float amount) {
+        this.Kg = Kg - amount;
     }
 }

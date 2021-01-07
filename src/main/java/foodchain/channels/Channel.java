@@ -10,9 +10,9 @@ import java.util.List;
 
 public abstract class Channel implements PartyObservable{
 
-    private TransactionType transactionType;
-    private GenesisTransaction genesisTransaction = new GenesisTransaction(null, null);
-    private Transaction lastTransaction = genesisTransaction;
+    protected TransactionType transactionType;
+    protected GenesisTransaction genesisTransaction = new GenesisTransaction(null, null, null);
+    protected Transaction lastTransaction = genesisTransaction;
     protected List<ChannelObserver> subscribers;
 
     public TransactionType getTransactionType() {
@@ -23,4 +23,5 @@ public abstract class Channel implements PartyObservable{
         this.subscribers = new LinkedList<ChannelObserver>();
         this.transactionType = type;
     }
+
 }

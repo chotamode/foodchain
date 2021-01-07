@@ -1,5 +1,6 @@
 package foodchain.transactions;
 
+import foodchain.channels.util.RP;
 import foodchain.party.Party;
 
 import java.text.SimpleDateFormat;
@@ -11,13 +12,13 @@ import java.util.Random;
  */
 public abstract class  Transaction{
 
-    private final Party receiver;
-    private final Party sender;
-    private final String timestamp;
-    private final String hashCode;
-    private String previousHashCode;
-    private boolean successful;
-    private Transaction previousTransaction;
+    protected final Party receiver;
+    protected final Party sender;
+    protected final String timestamp;
+    protected final String hashCode;
+    protected final String previousHashCode;
+    protected boolean successful;
+    protected final Transaction previousTransaction;
 
 
     /**
@@ -25,10 +26,19 @@ public abstract class  Transaction{
      * @param receiver the party which receives money/product.
      * @param sender the party which sends money/product.
      */
-    public Transaction(Party receiver, Party sender) {
+    public Transaction(Party receiver, Party sender, Transaction previousTransaction) {
         this.receiver = receiver;
         this.sender = sender;
         this.timestamp = generateTimestamp();
+
+        this.previousTransaction = previousTransaction;
+        if(previousTransaction == null){
+            this.previousHashCode = null;
+        }else{
+            this.previousHashCode = this.previousTransaction.getHashCode();
+        }
+
+
         if(receiver == null || sender == null){
             this.hashCode = generateHashCode("genesis", "block");
         }else{
@@ -106,18 +116,18 @@ public abstract class  Transaction{
         this.successful = successful;
     }
 
-    /**
-     * Link previous transaction in list of transactions.
-     * @param previousTransaction the previous committed transaction in chain.
-     */
-    public void setPreviousTransaction(Transaction previousTransaction) {
-        this.previousTransaction = previousTransaction;
-        try {
-            this.previousHashCode = previousTransaction.getHashCode();
-        } catch (NullPointerException e) {
-            this.previousHashCode = null;
-        }
-    }
+//    /**
+//     * Link previous transaction in list of transactions.
+//     * @param previousTransaction the previous committed transaction in chain.
+//     */
+//    private void setPreviousTransaction(Transaction previousTransaction) {
+//        this.previousTransaction = previousTransaction;
+//        try {
+//            this.previousHashCode = previousTransaction.getHashCode();
+//        } catch (NullPointerException e) {
+//            this.previousHashCode = null;
+//        }
+//    }
 
     public Transaction getPreviousTransaction() {
         return previousTransaction;
@@ -128,4 +138,6 @@ public abstract class  Transaction{
      * @return enum type of transaction.
      */
     public abstract TransactionType getTransactionType();
+
+    public abstract String toString();
 }
