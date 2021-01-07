@@ -18,7 +18,7 @@ public class MeatProduct implements ProductType{
         this.meatProducts = meatProducts;
     }
 
-    public ProductTypes getProduct() {
+    public ProductTypes getProductTypes() {
         return meatProducts;
     }
 

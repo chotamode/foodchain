@@ -4,16 +4,18 @@ package foodchain.product.Products;
  * The enum Meat products.
  */
 public enum MeatProducts implements ProductTypes{
-    /**
-     * Beef meat products.
-     */
-    BEEF,
-    /**
-     * Pork meat products.
-     */
-    PORK,
-    /**
-     * Chicken meat products.
-     */
-    CHICKEN
+
+    BEEF(100),
+    PORK(60),
+    CHICKEN(40);
+
+    private final int cost;
+
+    MeatProducts(int cost) {
+        this.cost = cost;
+    }
+
+    public int getCost() {
+        return cost;
+    }
 }

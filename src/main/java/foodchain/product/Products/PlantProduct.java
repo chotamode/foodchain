@@ -18,7 +18,7 @@ public class PlantProduct implements ProductType{
         Kg = kg;
     }
 
-    public ProductTypes getProduct() {
+    public ProductTypes getProductTypes() {
         return plantProducts;
     }
 
