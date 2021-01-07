@@ -17,7 +17,7 @@ public class MilkParametersStrategy implements ParametersStrategy{
      */
     public MilkParametersStrategy(Product product) {
         this.amountOfLiters = product.getProductType().getQuantity();
-        this.productType = product.getProductType().getProduct();
+        this.productType = product.getProductType().getProductTypes();
     }
 
     public ProductTypes getProductType() {

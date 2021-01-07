@@ -11,7 +11,7 @@ public interface ProductType {
      *
      * @return the product
      */
-    ProductTypes getProduct();
+    ProductTypes getProductTypes();
 
     /**
      * Gets quantity.

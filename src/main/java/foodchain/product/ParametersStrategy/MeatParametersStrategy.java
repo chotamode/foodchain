@@ -17,7 +17,7 @@ public class MeatParametersStrategy implements ParametersStrategy{
      */
     public MeatParametersStrategy(Product product) {
         this.amountOfKg = product.getProductType().getQuantity();
-        this.productType = product.getProductType().getProduct();
+        this.productType = product.getProductType().getProductTypes();
     }
 
     public ProductTypes getProductType() {

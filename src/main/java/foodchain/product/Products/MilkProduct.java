@@ -19,7 +19,7 @@ public class MilkProduct implements ProductType{
     }
 
 
-    public ProductTypes getProduct() {
+    public ProductTypes getProductTypes() {
         return milkProducts;
     }
 
