@@ -8,7 +8,7 @@ import foodchain.channels.util.Request;
 public class Customer extends Party {
 
     public Customer(String name, int balance) {
-        super(name, balance, margin);
+        super(name, balance, 0);
     }
 
     @Override

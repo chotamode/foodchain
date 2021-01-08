@@ -29,12 +29,7 @@ public class Seller extends Party{
         }
     }
 
-    @Override
-    protected boolean canProcessRequest(Request request) {
-        return request.getPartyType() == PartyType.CUSTOMER;
-    }
-
     public int getMargin() {
-        return margin;
+        return super.getMargin();
     }
 }

@@ -8,15 +8,13 @@ import foodchain.product.Product;
  */
 public class Storage extends Party{
 
-    private static final PartyType partyType = PartyType.STORAGE;
-
     /**
      * Instantiates a new Storage.
      *
      * @param name    the name
      * @param balance the balance
      */
-    public Storage(String name, int balance) {
+    public Storage(String name, int balance, int margin) {
         super(name, balance, margin);
     }
 

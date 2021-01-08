@@ -4,18 +4,18 @@ import foodchain.party.Party;
 
 public class MoneyTransaction extends Transaction {
 
-    private final int money;
+    private final float money;
     private final Party reciever;
     private final TransactionType type = TransactionType.MONEY;
 
-    public MoneyTransaction(Party creator, Party reciever, int money, Transaction previousTransaction) {
+    public MoneyTransaction(Party creator, Party reciever, float money, Transaction previousTransaction) {
         super(creator, previousTransaction);
         this.money = money;
         this.reciever = reciever;
     }
 
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 

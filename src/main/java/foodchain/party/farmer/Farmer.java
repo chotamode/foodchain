@@ -24,7 +24,7 @@ public class Farmer extends Party {
         return plantFactory.factoryMethod(q, plantProducts);
     }
 
-    public Farmer(String name, int balance) {
+    public Farmer(String name, int balance, int margin) {
         super(name, balance, margin);
     }
 

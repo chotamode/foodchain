@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Party implements ChannelObserver {
-    private int balance;
+    private float balance;
     private final String name;
     private List<Product> products;
     private List<Request> requests;
@@ -36,9 +36,9 @@ public abstract class Party implements ChannelObserver {
         this.name = name;
         this.balance = balance;
         this.margin = margin;
-        this.products = new LinkedList<Product>();
-        this.requests = new LinkedList<Request>();
-        this.blocks = new HashMap<Transaction, Boolean>();
+        this.products = new LinkedList<>();
+        this.requests = new LinkedList<>();
+        this.blocks = new HashMap<>();
     }
 
     protected boolean requestPaid(Request request) {
@@ -67,7 +67,9 @@ public abstract class Party implements ChannelObserver {
 
     public abstract void processRequest(Request request);
 
-    protected abstract boolean canProcessRequest(Request request);
+    protected boolean canProcessRequest(Request request){
+        return request.getPartyType() == this.getPartyType();
+    }
 
     public boolean productAvailable(Request request) {
         for (Product p : products
@@ -145,7 +147,7 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
-    public int getBalance() {
+    public float getBalance() {
         return balance;
     }
 

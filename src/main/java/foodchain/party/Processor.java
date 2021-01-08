@@ -8,15 +8,13 @@ import foodchain.product.Product;
  */
 public class Processor extends Party{
 
-    private static final PartyType partyType = PartyType.PROCESSOR;
-
     /**
      * Instantiates a new Processor.
      *
      * @param name    the name
      * @param balance the balance
      */
-    public Processor(String name, int balance) {
+    public Processor(String name, int balance, int margin) {
         super(name, balance, margin);
     }
 
