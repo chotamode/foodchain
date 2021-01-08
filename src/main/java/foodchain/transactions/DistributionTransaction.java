@@ -2,39 +2,40 @@ package foodchain.transactions;
 
 import foodchain.party.Party;
 import foodchain.product.Product;
+import foodchain.product.Products.ProductType;
 
 public class DistributionTransaction extends Transaction{
 
     private final TransactionType type = TransactionType.DISTRIBUTION;
-    private final Product product;
+    private final ProductType productType;
     private final Party receiver;
-    private final float amount;
+    private final Party distributor;
 
-    public DistributionTransaction(Party creator, Party receiver,  Product product, float amount, Transaction previousTransaction) {
+    public DistributionTransaction(Party creator, Party receiver,Party distributor, ProductType productType, Transaction previousTransaction) {
         super(creator, previousTransaction);
-        this.product = product;
         this.receiver = receiver;
-        this.amount = amount;
+        this.productType = productType;
+        this.distributor = distributor;
+    }
+
+    public ProductType getProductType() {
+        return productType;
     }
 
     public TransactionType getType() {
         return type;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
     public Party getReceiver() {
         return receiver;
-    }
-
-    public float getAmount() {
-        return amount;
     }
 
     @Override
     public TransactionType getTransactionType() {
         return type;
+    }
+
+    public Party getDistributor() {
+        return distributor;
     }
 }

@@ -5,22 +5,21 @@ import foodchain.product.Product;
 /**
  * The interface Product type.
  */
-public interface ProductType {
-    /**
-     * Gets product.
-     *
-     * @return the product
-     */
-    ProductTypes getProductTypes();
+public abstract class ProductType {
 
-    /**
-     * Gets quantity.
-     *
-     * @return the quantity
-     */
-    float getQuantity();
+    protected float quantity;
+    protected final ProductTypes productTypes;
 
-    void reduce(float amount);
+    ProductType(float quantity, ProductTypes productTypes){
+        this.quantity = quantity;
+        this.productTypes = productTypes;
+    };
 
-    int getCost();
+    public abstract ProductTypes getProductTypes();
+
+    public abstract float getQuantity();
+
+    public abstract void reduce(float amount);
+
+    public abstract float getCost();
 }

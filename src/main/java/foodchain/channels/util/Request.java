@@ -1,5 +1,6 @@
 package foodchain.channels.util;
 
+import foodchain.party.Distributor;
 import foodchain.party.Party;
 import foodchain.party.PartyType;
 import foodchain.product.Products.ProductType;
@@ -9,27 +10,39 @@ public class Request {
     private final ProductType productType;
     private final PartyType partyType;//party that can fulfill this request
     private final Party creator;
-    private Party responding;
+    private Party respondingParty;
+    private Distributor respondingDistributor;
     private boolean paid = false;
 
     public Request(Party creator, ProductType productType, PartyType partyType) {
         this.creator = creator;
         this.partyType = partyType;
         this.productType = productType;
-        this.responding = null;
+        this.respondingParty = null;
     }
 
-    public void setResponding(Party responding) {
-        if(this.responding == null){
-            this.responding = responding;
+    public void setRespondingParty(Party respondingParty) {
+        if(this.respondingParty == null){
+            this.respondingParty = respondingParty;
         }else{
             System.out.println("Someone already fulfilling this request");
         }
-
     }
 
-    public Party getResponding() {
-        return responding;
+    public Distributor getRespondingDistributor() {
+        return respondingDistributor;
+    }
+
+    public void setRespondingDistributor(Distributor respondingDistributor) {
+        if(this.respondingDistributor == null){
+            this.respondingDistributor = respondingDistributor;
+        }else{
+            System.out.println("Someone already delivering this request");
+        }
+    }
+
+    public Party getRespondingParty() {
+        return respondingParty;
     }
 
     public void setPaid() {
@@ -40,8 +53,12 @@ public class Request {
         return paid;
     }
 
+    public float getDeliveryCost(){
+        return getCost() * respondingDistributor.getMargin();
+    }
+
     public float getCost(){
-        return productType.getQuantity() * productType.getCost() * (1 + (responding.getMargin()/100));
+        return productType.getCost() * (1 + (respondingParty.getMargin()/100));
     }
 
     public ProductType getProductType() {

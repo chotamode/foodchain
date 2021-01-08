@@ -1,36 +1,45 @@
 package foodchain.party;
 
+import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
 import foodchain.product.Product;
+import foodchain.transactions.MoneyTransaction;
 import foodchain.transactions.Transaction;
+import foodchain.transactions.TransactionType;
 
-/**
- * The type Distributor.
- */
+import java.util.Map;
+
 public class Distributor extends Party{
 
-    /**
-     * Instantiates a new Distributor.
-     *
-     * @param name    the name
-     * @param balance the balance
-     */
     public Distributor(String name, int balance, int margin) {
         super(name, balance, margin);
     }
 
-    public void sendProduct(Product product) {
-
+    @Override
+    protected void requestPayment(Request request){
+        if(request.getRespondingDistributor()!= this){
+            System.out.println("You are not delivering this product.");
+            return;
+        }
+        getMoneyChannel().addPaymentTransaction(new Payment(this,
+                request.getRespondingParty(),
+                request.getDeliveryCost()));
+        request.setPaid();
     }
 
     @Override
     protected boolean requestPaid(Request request) {
-        return true;
-    }
-
-    @Override
-    public void fulfillRequest(Request request) {
-        //:)
+        for (Map.Entry<Transaction, Boolean> entry : blocks.entrySet()
+        ) {
+            if (request.getRespondingDistributor() == ((MoneyTransaction) entry.getKey()).getReciever()
+                    && request.getRespondingDistributor() == this
+                    && request.getCost() == ((MoneyTransaction) entry.getKey()).getMoney()
+                    && !entry.getValue()) {
+                entry.setValue(true);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -40,12 +49,12 @@ public class Distributor extends Party{
 
     @Override
     public void processRequest(Request request) {
-
+        request.setRespondingDistributor(this);
+        request.getRespondingParty().requestPayment(request);
+        if(!requestPaid(request)){
+            System.out.println("Request is not paid.");
+            return;
+        }
     }
 
-
-    @Override
-    public void update(Transaction transaction) {
-
-    }
 }

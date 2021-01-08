@@ -21,15 +21,15 @@ public class Seller extends Party{
     @Override
     public void processRequest(Request request) {
         if(productAvailable(request)){
-            request.setResponding(this);
+            request.setRespondingParty(this);
             request.getCreator().requestPayment(request);
+            if(!requestPaid(request)){
+                System.out.println("Request is not paid.");
+                return;
+            }
             sendDeliveryRequest(this, request.getCreator(), request.getProductType());
         }else{
             System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
         }
-    }
-
-    public int getMargin() {
-        return super.getMargin();
     }
 }

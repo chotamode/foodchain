@@ -3,37 +3,28 @@ package foodchain.product.Products;
 /**
  * The type Milk product.
  */
-public class MilkProduct implements ProductType{
-    private final MilkProducts milkProducts;
-    private float Liters;
+public class MilkProduct extends ProductType{
 
-    /**
-     * Instantiates a new Milk product.
-     *
-     * @param Liters       the liters
-     * @param milkProducts the milk products
-     */
     public MilkProduct(float Liters, MilkProducts milkProducts){
-        this.Liters = Liters;
-        this.milkProducts = milkProducts;
+        super(Liters, milkProducts);
     }
 
 
     public ProductTypes getProductTypes() {
-        return milkProducts;
+        return this.productTypes;
     }
 
     public float getQuantity() {
-        return Liters;
+        return this.quantity;
     }
 
     @Override
     public void reduce(float amount) {
-        this.Liters = Liters - amount;
+        this.quantity = this.quantity - amount;
     }
 
     @Override
-    public int getCost() {
-        return milkProducts.getCost();
+    public float getCost() {
+        return this.productTypes.getCost()  * this.quantity;
     }
 }

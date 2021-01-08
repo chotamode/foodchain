@@ -3,36 +3,29 @@ package foodchain.product.Products;
 /**
  * The type Plant product.
  */
-public class PlantProduct implements ProductType{
-    private final PlantProducts plantProducts;
-    private float Kg;
+public class PlantProduct extends ProductType{
 
-    /**
-     * Instantiates a new Plant product.
-     *
-     * @param kg    the kg
-     * @param plant the plant
-     */
+
     public PlantProduct(float kg, PlantProducts plant) {
-        this.plantProducts = plant;
-        Kg = kg;
+        super(kg, plant);
+
     }
 
     public ProductTypes getProductTypes() {
-        return plantProducts;
+        return this.productTypes;
     }
 
     public float getQuantity() {
-        return Kg;
+        return this.quantity;
     }
 
     @Override
     public void reduce(float amount) {
-        this.Kg = Kg - amount;
+        this.quantity = this.quantity - amount;
     }
 
     @Override
-    public int getCost() {
-        return plantProducts.getCost();
+    public float getCost() {
+        return this.productTypes.getCost()  * this.quantity;
     }
 }

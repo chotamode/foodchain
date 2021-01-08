@@ -8,6 +8,8 @@ import foodchain.product.ParametersStrategy.PlantParametersStrategy;
 import foodchain.product.ProductState.ProductState;
 import foodchain.product.Products.ProductType;
 
+import java.util.UUID;
+
 
 public class Product {
 
@@ -18,8 +20,9 @@ public class Product {
     private int storageTemperature;
     private int storageHumidity;
 
-    private Party location;
     private final ProductType productType;
+
+    private final UUID uuid = UUID.randomUUID();
 
     public Product(ProductType productType) {
         this.productType = productType;
@@ -33,8 +36,11 @@ public class Product {
 
     }
 
-    public void reduce(float amount) {
-        productType.reduce(amount);
+    public Product split(float amount) {
+        Product product = new Product(this.productType);
+        product.productType.reduce(this.productType.getQuantity() - amount);
+        this.productType.reduce(amount);
+        return product;
     }
 
     public void setParametersStrategy(ParametersStrategy parametersStrategy) {
@@ -68,5 +74,21 @@ public class Product {
 
     public void setStorageHumidity(int storageHumidity) {
         this.storageHumidity = storageHumidity;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public int getExpirationDate() {
+        return expirationDate;
+    }
+
+    public int getStorageTemperature() {
+        return storageTemperature;
+    }
+
+    public int getStorageHumidity() {
+        return storageHumidity;
     }
 }
