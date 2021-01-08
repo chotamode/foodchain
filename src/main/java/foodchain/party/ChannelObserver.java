@@ -1,13 +1,15 @@
 package foodchain.party;
 
 import foodchain.channels.Channel;
-import foodchain.channels.util.RP;
+import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
-
-import java.util.List;
+import foodchain.transactions.Transaction;
 
 public interface ChannelObserver {
-    void update(RP request);
     void attach(Channel channel);
+
     void detach(Channel channel);
+
+    void update(Request request);
+    void update(Transaction transaction);
 }

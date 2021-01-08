@@ -2,29 +2,19 @@ package foodchain.transactions;
 
 import foodchain.party.Party;
 
-/**
- * The type Money transaction.
- */
 public class MoneyTransaction extends Transaction {
-    private final int money;
 
-    /**
-     * Constructs transaction between parties.
-     *
-     * @param receiver the party which receives money/product.
-     * @param sender   the party which sends money/product.
-     * @param money    the money
-     */
-    public MoneyTransaction(Party receiver, Party sender, int money, Transaction previousTransaction) {
-        super(receiver, sender, previousTransaction);
+    private final int money;
+    private final Party reciever;
+    private final TransactionType type = TransactionType.MONEY;
+
+    public MoneyTransaction(Party creator, Party reciever, int money, Transaction previousTransaction) {
+        super(creator, previousTransaction);
         this.money = money;
+        this.reciever = reciever;
     }
 
-    /**
-     * Gets money.
-     *
-     * @return the money
-     */
+
     public int getMoney() {
         return money;
     }
@@ -37,9 +27,16 @@ public class MoneyTransaction extends Transaction {
     public String toString() {
         return "MoneyTransaction{" +
                 "money=" + money +
-                ", receiver=" + receiver +
-                ", sender=" + sender +
-                ", timestamp='" + timestamp + '\'' +
+                ", reciever=" + reciever +
+                ", creator=" + getCreator() +
                 '}';
+    }
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    public Party getReciever() {
+        return reciever;
     }
 }

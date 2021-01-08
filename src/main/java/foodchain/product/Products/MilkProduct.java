@@ -31,4 +31,9 @@ public class MilkProduct implements ProductType{
     public void reduce(float amount) {
         this.Liters = Liters - amount;
     }
+
+    @Override
+    public int getCost() {
+        return milkProducts.getCost();
+    }
 }

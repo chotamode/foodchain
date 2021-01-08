@@ -4,16 +4,11 @@ import foodchain.party.Party;
 
 import java.util.UUID;
 
-public class Payment implements RP{
+public class Payment {
 
-    private final UUID id;
     private final Party sender;
     private final Party reciever;
-    private final int money;
-
-    public UUID getId() {
-        return id;
-    }
+    private final float money;
 
     public Party getSender() {
         return sender;
@@ -23,12 +18,11 @@ public class Payment implements RP{
         return reciever;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 
-    public Payment(Party sender, Party reciever, int money) {
-        this.id = UUID.randomUUID();
+    public Payment(Party sender, Party reciever, float money) {
         this.sender = sender;
         this.reciever = reciever;
         this.money = money;

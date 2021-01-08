@@ -6,11 +6,12 @@ package foodchain.transactions;
 public enum TransactionType {
 
     GENESIS,
-
     PRODUCT,
-
     MONEY,
-
-    TRANSPORT
+    DISTRIBUTION,
+    STORE,
+    PROCESS,
+    CREATE_PRODUCT,
+    SELL,
 
 }

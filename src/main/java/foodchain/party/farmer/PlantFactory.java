@@ -11,6 +11,6 @@ import foodchain.product.Products.ProductTypes;
 public class PlantFactory extends ProductFactory{
 
     public Product factoryMethod(float quantity, ProductTypes productTypes) {
-        return new Product(new PlantProduct(quantity, (PlantProducts) productTypes));
+        return new Product( new PlantProduct(quantity, (PlantProducts) productTypes));
     }
 }

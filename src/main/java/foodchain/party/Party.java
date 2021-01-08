@@ -3,63 +3,76 @@ package foodchain.party;
 import foodchain.channels.Channel;
 import foodchain.channels.MoneyChannel;
 import foodchain.channels.ProductChannel;
+import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Payment;
-import foodchain.channels.util.RP;
 import foodchain.channels.util.Request;
 import foodchain.product.Product;
-import foodchain.transactions.GenesisTransaction;
+import foodchain.product.Products.ProductType;
 import foodchain.transactions.MoneyTransaction;
-import foodchain.transactions.ProductTransaction;
 import foodchain.transactions.Transaction;
+import foodchain.transactions.TransactionType;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The type Party.
- */
 public abstract class Party implements ChannelObserver {
-    protected int balance;
-    protected final String name;
-    protected final PartyType partyType;
-    protected List<Product> products;
-    protected List<Request> requests;
-    protected MoneyChannel moneyChannel;
-    protected ProductChannel productChannel;
-    protected Map<Transaction, Boolean> blocks;
-    protected Transaction genesisTransaction = new GenesisTransaction(null, null, null);
-    protected Transaction lastTransaction = genesisTransaction;
+    private int balance;
+    private final String name;
+    private List<Product> products;
+    private List<Request> requests;
+    private MoneyChannel moneyChannel;
+    private ProductChannel productChannel;
+    private Map<Transaction, Boolean> blocks; //payments transactions, boolean means if money accepted
+    private Transaction lastTransactionMoney = null;
+    private Transaction lastTransactionProduct = null;
+    private final int margin;
 
-    /**
-     * Create transaction based on this request.
-     *
-     * @param request
-     */
+    protected Party(String name, int balance, int margin) {
+        if(margin > 100){
+            margin = margin % 100;
+        }
+        this.name = name;
+        this.balance = balance;
+        this.margin = margin;
+        this.products = new LinkedList<Product>();
+        this.requests = new LinkedList<Request>();
+        this.blocks = new HashMap<Transaction, Boolean>();
+    }
+
+    protected boolean requestPaid(Request request) {
+        for (Map.Entry<Transaction, Boolean> entry : blocks.entrySet()
+        ) {
+            if (request.getCreator() == ((MoneyTransaction) entry.getKey()).getReciever()
+                    && request.getCreator() == this
+                    && request.getCost() == ((MoneyTransaction) entry.getKey()).getMoney()
+                    && !entry.getValue()) {
+                entry.setValue(true);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void fulfillRequest(Request request) {
-        if (request.getType() != this.partyType) {
+        if (request.getPartyType() != this.getPartyType()) {
             System.out.println("You can't fulfill this request(wrong party type)");
-            return;
-        } else if (!productAvailable(request)) {
-            System.out.println("Not enough product");
             return;
         }
         processRequest(request);
-        this.productChannel.addTransaction(this, request);
-
     }
 
-    /**
-     * Checks if party have enough product
-     *
-     * @param request
-     * @return true if enough
-     */
+    public abstract PartyType getPartyType();
+
+    public abstract void processRequest(Request request);
+
+    protected abstract boolean canProcessRequest(Request request);
+
     public boolean productAvailable(Request request) {
         for (Product p : products
         ) {
-            if (p.getProductType().getProduct() == request.getProduct().getProductType().getProduct()
+            if (p.getProductType().getProductTypes() == request.getProductType().getProductTypes()
                     && request.getAmount() <= p.getProductType().getQuantity()) {
                 return true;
             }
@@ -67,30 +80,29 @@ public abstract class Party implements ChannelObserver {
         return false;
     }
 
-    /**
-     * Do stuff that this party do and change Request type.
-     *
-     * @param request
-     */
-    public abstract void processRequest(Request request);
-
-    public void sendRequest(Request request, ProductChannel channel) {
+    public void sendDeliveryRequest(Party sender, Party receiver, ProductType productType){
+        if(this.getPartyType() == PartyType.DISTRIBUTOR){
+            System.out.println("Distributor can't create Distribution Request");
+            return;
+        }
         if (productChannel != null) {
+            Request request = new DeliveryRequest(sender, receiver, productType, PartyType.DISTRIBUTOR);
             productChannel.addRequest(request);
         } else {
             System.out.println("You don't subscribed to product channel");
         }
     }
 
-    public void sendMoney(Payment payment) {
-        if (moneyChannel != null) {
-            if (this.balance < payment.getMoney()) {
-                System.out.println("Not enough money");
-                return;
-            }
-            moneyChannel.addPayment(payment);
+    public void sendRequest(ProductType productType) {
+        if(this.balance < productType.getCost()){
+            System.out.println("You don't have enough money");
+            return;
+        }
+        if (productChannel != null) {
+            Request request = new Request(this, productType, this.getPartyType());
+            productChannel.addRequest(request);
         } else {
-            System.out.println("You don't subscribed to money channel");
+            System.out.println("You don't subscribed to product channel");
         }
     }
 
@@ -112,85 +124,59 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
-
-    /**
-     * If got Request add it to requests list.
-     * If got payment increase or decrease balance and
-     * add new block into this party blockchain, and
-     * updates lastTransaction
-     * @param rp Request or Payment
-     */
     @Override
-    public void update(RP rp) {
-        if (rp instanceof Request) {
-            requests.add((Request) rp);
-        } else if (rp instanceof Payment) {
-            if (((Payment) rp).getReciever() == this) {
-                balance = balance + ((Payment) rp).getMoney();
-            } else if (((Payment) rp).getSender() == this) {
-                balance = balance - ((Payment) rp).getMoney();
-            }
-            lastTransaction = new MoneyTransaction(
-                    ((Payment) rp).getReciever(),
-                    ((Payment) rp).getSender(),
-                    ((Payment) rp).getMoney(),
-                    lastTransaction);
-            blocks.put(lastTransaction,
-                    false
-            );
+    public void update(Request request) {
+        if(canProcessRequest(request)){
+            requests.add(request);
         }
     }
 
-    /**
-     * Instantiates a new Party.
-     *
-     * @param name      the name
-     * @param balance   the balance
-     * @param partyType the party type
-     */
-    protected Party(String name, int balance, PartyType partyType) {
-        this.name = name;
-        this.balance = balance;
-        this.partyType = partyType;
-        this.products = new LinkedList<Product>();
-        this.requests = new LinkedList<Request>();
-        this.blocks = new HashMap<Transaction, Boolean>();
-        this.blocks.put(genesisTransaction, null);
+    @Override
+    public void update(Transaction transaction) {
+        if (transaction.getTransactionType() == TransactionType.MONEY) {
+            if (((MoneyTransaction) transaction).getReciever() == this) {
+                balance = balance + ((MoneyTransaction) transaction).getMoney();
+            } else if (transaction.getCreator() == this) {
+                balance = balance - ((MoneyTransaction) transaction).getMoney();
+            }
+            lastTransactionMoney = transaction;
+        } else if (transaction.getTransactionType() != TransactionType.MONEY) {
+            lastTransactionProduct = transaction;
+        }
     }
 
-    /**
-     * Gets balance.
-     *
-     * @return the balance
-     */
     public int getBalance() {
         return balance;
     }
 
-    /**
-     * Sets balance.
-     *
-     * @param balance the balance
-     */
     public void setBalance(int balance) {
         this.balance = balance;
     }
 
-    /**
-     * Gets name.
-     *
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Gets party type.
-     *
-     * @return the party type
-     */
-    public PartyType getPartyType() {
-        return partyType;
+    public Transaction getLastTransactionMoney() {
+        return lastTransactionMoney;
+    }
+
+    public Transaction getLastTransactionProduct() {
+        return lastTransactionProduct;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    protected void requestPayment(Request request){
+        moneyChannel.addPaymentTransaction(new Payment(this,
+                request.getResponding(),
+                request.getCost()));
+        request.setPaid();
+    }
+
+    public int getMargin() {
+        return margin;
     }
 }

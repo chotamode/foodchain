@@ -2,68 +2,62 @@ package foodchain.channels.util;
 
 import foodchain.party.Party;
 import foodchain.party.PartyType;
-import foodchain.product.Product;
+import foodchain.product.Products.ProductType;
 
-import java.util.UUID;
+public class Request {
 
-public class Request implements RP{
+    private final ProductType productType;
+    private final PartyType partyType;//party that can fulfill this request
+    private final Party creator;
+    private Party responding;
+    private boolean paid = false;
 
-
-    private final UUID id;
-    private final Product product;
-    private final float amount;
-    private PartyType type;
-    private Party reciever;
-    private final Party customer;/* person who made request*/
-
-    public Party getCustomer() {
-        return customer;
+    public Request(Party creator, ProductType productType, PartyType partyType) {
+        this.creator = creator;
+        this.partyType = partyType;
+        this.productType = productType;
+        this.responding = null;
     }
 
-    public Party getReciever() {
-        return reciever;
+    public void setResponding(Party responding) {
+        if(this.responding == null){
+            this.responding = responding;
+        }else{
+            System.out.println("Someone already fulfilling this request");
+        }
+
     }
 
-    public void setReciever(Party reciever) {
-        this.reciever = reciever;
+    public Party getResponding() {
+        return responding;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public void setPaid() {
+        this.paid = true;
     }
 
-    public PartyType getType() {
-        return type;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public void setType(PartyType type) {
-        this.type = type;
+    public float getCost(){
+        return productType.getQuantity() * productType.getCost() * (1 + (responding.getMargin()/100));
     }
 
-    public UUID getId() {
-        return id;
+    public ProductType getProductType() {
+        return productType;
     }
 
-    public Product getProduct() {
-        return product;
+    public PartyType getPartyType() {
+        return partyType;
     }
 
     public float getAmount() {
-        return amount;
+        return productType.getQuantity();
     }
 
-    public Request(Product product, float amount, PartyType type, Party reciever, Party customer) {
-        this.customer = customer;
-        this.reciever = reciever;
-        this.type = type;
-        this.id = UUID.randomUUID();
-        this.product = product;
-        this.amount = amount;
+    public Party getCreator() {
+        return creator;
     }
 
-    public void setCompleted() {
-        this.completed = true;
-    }
-
-    private boolean completed = false;
 }

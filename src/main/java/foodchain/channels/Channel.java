@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Channel implements PartyObservable{
 
     protected TransactionType transactionType;
-    protected GenesisTransaction genesisTransaction = new GenesisTransaction(null, null, null);
+    protected GenesisTransaction genesisTransaction = new GenesisTransaction(null, null);
     protected Transaction lastTransaction = genesisTransaction;
     protected List<ChannelObserver> subscribers;
 
@@ -22,6 +22,18 @@ public abstract class Channel implements PartyObservable{
     public Channel(TransactionType type) {
         this.subscribers = new LinkedList<ChannelObserver>();
         this.transactionType = type;
+    }
+
+    @Override
+    public void attach(ChannelObserver channelObserver) {
+        subscribers.add(channelObserver);
+        channelObserver.attach(this);
+    }
+
+    @Override
+    public void detach(ChannelObserver channelObserver) {
+        subscribers.remove(channelObserver);
+        channelObserver.detach(this);
     }
 
 }

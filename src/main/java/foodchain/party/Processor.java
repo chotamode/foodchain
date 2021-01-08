@@ -1,7 +1,7 @@
 package foodchain.party;
 
+import foodchain.channels.util.Request;
 import foodchain.product.Product;
-import foodchain.transactions.Transaction;
 
 /**
  * The type Processor.
@@ -17,7 +17,17 @@ public class Processor extends Party{
      * @param balance the balance
      */
     public Processor(String name, int balance) {
-        super(name, balance, partyType);
+        super(name, balance, margin);
+    }
+
+    @Override
+    public PartyType getPartyType() {
+        return PartyType.PROCESSOR;
+    }
+
+    @Override
+    public void processRequest(Request request) {
+
     }
 
     public void sendProduct(Product product) {

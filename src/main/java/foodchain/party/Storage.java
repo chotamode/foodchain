@@ -1,7 +1,7 @@
 package foodchain.party;
 
+import foodchain.channels.util.Request;
 import foodchain.product.Product;
-import foodchain.transactions.Transaction;
 
 /**
  * The type Storage.
@@ -17,7 +17,17 @@ public class Storage extends Party{
      * @param balance the balance
      */
     public Storage(String name, int balance) {
-        super(name, balance, partyType);
+        super(name, balance, margin);
+    }
+
+    @Override
+    public PartyType getPartyType() {
+        return PartyType.STORAGE;
+    }
+
+    @Override
+    public void processRequest(Request request) {
+
     }
 
     public void sendProduct(Product product) {

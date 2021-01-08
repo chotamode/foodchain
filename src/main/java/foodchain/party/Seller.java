@@ -1,14 +1,6 @@
 package foodchain.party;
 
 import foodchain.channels.util.Request;
-import foodchain.product.Product;
-import foodchain.transactions.ProductTransaction;
-import foodchain.transactions.Transaction;
-import foodchain.transactions.TransactionType;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * The type Seller.
@@ -17,26 +9,32 @@ public class Seller extends Party{
 
     private static final PartyType partyType = PartyType.SELLER;
 
-
-    /**
-     * Instantiates a new Seller.
-     *
-     * @param name    the name
-     * @param balance the balance
-     */
-    public Seller(String name, int balance) {
-        super(name, balance, partyType);
+    public Seller(String name, int balance, int margin) {
+        super(name, balance, margin);
     }
 
-
-    public void sendProduct(Product product) {
+    @Override
+    public PartyType getPartyType() {
+        return PartyType.SELLER;
     }
 
     @Override
     public void processRequest(Request request) {
-        if(request.getReciever() == request.getCustomer() && request.getReciever() == this){
-            request.setCompleted();
-            return;
-        }else if()
+        if(productAvailable(request)){
+            request.setResponding(this);
+            request.getCreator().requestPayment(request);
+            sendDeliveryRequest(this, request.getCreator(), request.getProductType());
+        }else{
+            System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
+        }
+    }
+
+    @Override
+    protected boolean canProcessRequest(Request request) {
+        return request.getPartyType() == PartyType.CUSTOMER;
+    }
+
+    public int getMargin() {
+        return margin;
     }
 }

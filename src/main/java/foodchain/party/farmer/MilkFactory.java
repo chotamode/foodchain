@@ -10,6 +10,6 @@ import foodchain.product.Products.ProductTypes;
  */
 public class MilkFactory extends ProductFactory{
     public Product factoryMethod(float quantity, ProductTypes productTypes) {
-        return new Product(new MilkProduct(quantity, (MilkProducts) productTypes));
+        return new Product( new MilkProduct(quantity, (MilkProducts) productTypes));
     }
 }

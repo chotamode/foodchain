@@ -10,6 +10,6 @@
         <module name="omo-foodchain1" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="10" />
+    <bytecodeTargetLevel target="14" />
   </component>
 </project>

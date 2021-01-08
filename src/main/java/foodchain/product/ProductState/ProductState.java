@@ -4,29 +4,18 @@ import foodchain.product.Product;
 
 import javax.print.attribute.standard.PrinterMessageFromOperator;
 
-/**
- * The type Product state.
- */
+
 public abstract class ProductState {
-    /**
-     * The State.
-     */
-    protected String state;
 
-    /**
-     * Gets state.
-     *
-     * @return the state
-     */
-    public String getState() {
-        return state;
+    protected Product product;
+
+    public ProductState(Product product) {
+        product.setProductState(this);
     }
 
-    /**
-     * Sets state.
-     *
-     * @param product the product
-     */
-    public void setState(Product product){
-    }
+    abstract void setDelivering();
+    abstract void setMade();
+    abstract void setProcessing();
+    abstract void setSold();
+    abstract void setStored();
 }

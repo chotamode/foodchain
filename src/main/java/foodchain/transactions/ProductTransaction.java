@@ -7,27 +7,19 @@ import foodchain.product.Product;
  * The type Product transaction.
  */
 public class ProductTransaction extends Transaction{
+
     private final Product product;
     private final float amount;
+    private final Party receiver;
 
-    /**
-     * Constructs transaction between parties.
-     *  @param receiver the party which receives money/product.
-     * @param sender   the party which sends money/product.
-     * @param product  the product
-     * @param amount
-     */
-    public ProductTransaction(Party receiver, Party sender, Product product, float amount, Transaction previousTransaction) {
-        super(receiver, sender, previousTransaction);
+    public ProductTransaction(Party creator, Party receiver, float amount, Product product, Transaction previousTransaction) {
+        super(creator, previousTransaction);
         this.product = product;
         this.amount = amount;
+
+        this.receiver = receiver;
     }
 
-    /**
-     * Gets product.
-     *
-     * @return the product
-     */
     public Product getProduct() {
         return product;
     }
@@ -41,9 +33,8 @@ public class ProductTransaction extends Transaction{
         return "ProductTransaction{" +
                 "product=" + product +
                 ", amount=" + amount +
+                ", creator=" + getCreator() +
                 ", receiver=" + receiver +
-                ", sender=" + sender +
-                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
 }

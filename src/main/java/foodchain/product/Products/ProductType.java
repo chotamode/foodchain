@@ -21,4 +21,6 @@ public interface ProductType {
     float getQuantity();
 
     void reduce(float amount);
+
+    int getCost();
 }

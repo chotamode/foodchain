@@ -8,24 +8,13 @@ import foodchain.product.Products.ProductTypes;
  */
 public class PlantParametersStrategy implements ParametersStrategy{
     private ProductTypes productType;
-    private Float amountOfKg;
 
-    /**
-     * Instantiates a new Plant parameters strategy.
-     *
-     * @param product the product
-     */
     public PlantParametersStrategy(Product product) {
-        this.amountOfKg = product.getProductType().getQuantity();
         this.productType = product.getProductType().getProductTypes();
     }
 
     public ProductTypes getProductType() {
         return productType;
-    }
-
-    public float getAmountOfKgOrLiters() {
-        return amountOfKg;
     }
 
     public void setStorageParametersStrategy(Product product) {

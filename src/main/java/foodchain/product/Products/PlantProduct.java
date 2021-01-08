@@ -30,4 +30,9 @@ public class PlantProduct implements ProductType{
     public void reduce(float amount) {
         this.Kg = Kg - amount;
     }
+
+    @Override
+    public int getCost() {
+        return plantProducts.getCost();
+    }
 }

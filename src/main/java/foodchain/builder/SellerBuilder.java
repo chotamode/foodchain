@@ -13,6 +13,6 @@ public class SellerBuilder extends PartyBuilder{
     }
     @Override
     Party createParty() {
-        return new Seller(name, balance);
+        return new Seller(name, balance, margin);
     }
 }
