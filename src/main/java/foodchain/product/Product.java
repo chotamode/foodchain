@@ -37,6 +37,10 @@ public class Product {
     }
 
     public Product split(float amount) {
+        if(this.getProductType().getQuantity() < amount){
+            System.out.println("Not enough product");
+            return null;
+        }
         Product product = new Product(this.productType);
         product.productType.reduce(this.productType.getQuantity() - amount);
         this.productType.reduce(amount);

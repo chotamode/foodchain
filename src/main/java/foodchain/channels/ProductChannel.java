@@ -6,10 +6,12 @@ import foodchain.party.ChannelObserver;
 import foodchain.party.Party;
 import foodchain.party.PartyType;
 import foodchain.product.Product;
+import foodchain.product.Products.ProductType;
 import foodchain.transactions.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The type Product channel.
@@ -39,12 +41,12 @@ public class ProductChannel extends Channel {
     /**
      * Add DistributionTransaction
      */
-    public void addDistributionTransaction(Party creator, Party receiver, Product product, float amount){
+    public void addDistributionTransaction(Party creator, Party receiver,Party distributor, Product product, float amount){
         if(creator.getPartyType() != PartyType.DISTRIBUTOR){
             System.out.println("You have to be " + PartyType.DISTRIBUTOR);
             return;
         }
-        lastTransaction = new DistributionTransaction(creator, receiver, product, amount, lastTransaction);
+        lastTransaction = new DistributionTransaction(creator, receiver, distributor, product.getProductType(), lastTransaction);
     }
 
     /**
@@ -61,12 +63,22 @@ public class ProductChannel extends Channel {
     /**
      *Add SellTransaction
      */
-    public void addSellTransaction(Party creator,Party receiver, Product product, float amount){
-        if(creator.getPartyType() != PartyType.SELLER){
-            System.out.println("You have to be " + PartyType.SELLER);
+    public void addSellTransaction(Party creator, Party receiver, UUID uuid, ProductType productType){
+        if(creator.getPartyType() == PartyType.DISTRIBUTOR && creator.getPartyType() == PartyType.CUSTOMER){
+            System.out.println("You are not allowed to sell");
             return;
         }
-        lastTransaction = new SellTransaction(creator, receiver, product, amount, lastTransaction);
+        TransactionIterator transactionIterator = new TransactionIterator(lastTransaction);
+        Transaction t = lastTransaction;
+        while(t != null){
+            if(t.getTransactionType() == TransactionType.SELL){
+                if(((SellTransaction)t).getUuid() == uuid){
+
+                }
+            }
+        }
+
+        lastTransaction = new SellTransaction(creator, receiver, uuid, productType, lastTransaction);
     }
 
     /**

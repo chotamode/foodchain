@@ -2,24 +2,23 @@ package foodchain.transactions;
 
 import foodchain.party.Party;
 import foodchain.product.Product;
-import foodchain.product.Products.ProductType;
 
 public class DistributionTransaction extends Transaction{
 
     private final TransactionType type = TransactionType.DISTRIBUTION;
-    private final ProductType productType;
+    private final Product product;
     private final Party receiver;
     private final Party distributor;
 
-    public DistributionTransaction(Party creator, Party receiver,Party distributor, ProductType productType, Transaction previousTransaction) {
+    public DistributionTransaction(Party creator, Party receiver, Party distributor, Product product, Transaction previousTransaction) {
         super(creator, previousTransaction);
         this.receiver = receiver;
-        this.productType = productType;
+        this.product = product;
         this.distributor = distributor;
     }
 
-    public ProductType getProductType() {
-        return productType;
+    public Product getProduct() {
+        return this.product;
     }
 
     public TransactionType getType() {

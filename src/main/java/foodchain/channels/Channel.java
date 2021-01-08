@@ -3,6 +3,7 @@ package foodchain.channels;
 import foodchain.party.ChannelObserver;
 import foodchain.transactions.GenesisTransaction;
 import foodchain.transactions.Transaction;
+import foodchain.transactions.TransactionIterator;
 import foodchain.transactions.TransactionType;
 
 import java.util.LinkedList;

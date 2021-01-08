@@ -19,11 +19,11 @@ import java.util.Map;
 
 public abstract class Party implements ChannelObserver {
     protected float balance;
-    private final String name;
-    private List<Product> products;
-    private List<Request> requests;
-    private MoneyChannel moneyChannel;
-    private ProductChannel productChannel;
+    protected final String name;
+    protected List<Product> products;
+    protected List<Request> requests;
+    protected MoneyChannel moneyChannel;
+    protected ProductChannel productChannel;
     protected Map<Transaction, Boolean> blocks; //payments transactions, boolean means if money accepted
     protected Transaction lastTransactionMoney = null;
     protected Transaction lastTransactionProduct = null;
@@ -63,7 +63,21 @@ public abstract class Party implements ChannelObserver {
         processRequest(request);
     }
 
-    protected abstract PartyType getPartyType();
+    protected Product giveProduct(Party receiver, ProductType productType){
+        for (Product p: products
+             ) {
+            if(p.getProductType().getProductTypes() == productType.getProductTypes()
+                    && productType.getQuantity() <= p.getProductType().getQuantity()){
+                receiver.receiveProduct(p.split(productType.getQuantity()));
+            }
+        }
+    }
+
+    protected void receiveProduct(Product product){
+        this.products.add(product);
+    };
+
+    public abstract PartyType getPartyType();
 
     protected abstract void processRequest(Request request);
 
@@ -147,7 +161,7 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
-    protected float getBalance() {
+    public float getBalance() {
         return balance;
     }
 
@@ -155,11 +169,11 @@ public abstract class Party implements ChannelObserver {
         this.balance = balance;
     }
 
-    protected String getName() {
+    public String getName() {
         return name;
     }
 
-    protected Transaction getLastTransactionMoney() {
+    public Transaction getLastTransactionMoney() {
         return lastTransactionMoney;
     }
 

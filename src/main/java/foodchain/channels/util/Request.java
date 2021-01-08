@@ -22,11 +22,7 @@ public class Request {
     }
 
     public void setRespondingParty(Party respondingParty) {
-        if(this.respondingParty == null){
-            this.respondingParty = respondingParty;
-        }else{
-            System.out.println("Someone already fulfilling this request");
-        }
+        this.respondingParty = respondingParty;
     }
 
     public Distributor getRespondingDistributor() {

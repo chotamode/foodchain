@@ -55,6 +55,10 @@ public class Distributor extends Party{
             System.out.println("Request is not paid.");
             return;
         }
+
     }
 
+    private void deliverProduct(Party sender, Party receiver){
+
+    }
 }
