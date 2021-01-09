@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 public class TransactionIterator implements Iterator {
 
-    protected final Transaction root_transaction;
-    protected Transaction transaction;
+    public final Transaction root_transaction;
+    public Transaction transaction;
 
     public TransactionIterator(Transaction root_transaction) {
         this.root_transaction = root_transaction;

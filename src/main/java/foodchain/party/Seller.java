@@ -26,8 +26,9 @@ public class Seller extends Party{
                 System.out.println("Request is not paid.");
                 return;
             }
-            productChannel.addSellTransaction(this, request.getCreator(), );
+            productChannel.addSellTransaction(this, request.getCreator(),  this.currentProduct.getUuid(), this.currentProduct.getProductType());
             sendDeliveryRequest(this, request.getCreator(), request.getProductType());
+
         }else{
             System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
         }

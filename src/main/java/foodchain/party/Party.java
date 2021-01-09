@@ -28,6 +28,7 @@ public abstract class Party implements ChannelObserver {
     protected Transaction lastTransactionMoney = null;
     protected Transaction lastTransactionProduct = null;
     private final int margin;
+    protected Product currentProduct;
 
     protected Party(String name, int balance, int margin) {
         if(margin > 100){
@@ -63,11 +64,13 @@ public abstract class Party implements ChannelObserver {
         processRequest(request);
     }
 
-    protected Product giveProduct(Party receiver, ProductType productType){
+    protected void giveProduct(Party receiver, ProductType productType){
+        Product product = null;
         for (Product p: products
              ) {
             if(p.getProductType().getProductTypes() == productType.getProductTypes()
                     && productType.getQuantity() <= p.getProductType().getQuantity()){
+                product = p.split(productType.getQuantity());
                 receiver.receiveProduct(p.split(productType.getQuantity()));
             }
         }
@@ -90,6 +93,7 @@ public abstract class Party implements ChannelObserver {
         ) {
             if (p.getProductType().getProductTypes() == request.getProductType().getProductTypes()
                     && request.getAmount() <= p.getProductType().getQuantity()) {
+                this.currentProduct = p;
                 return true;
             }
         }
@@ -156,8 +160,10 @@ public abstract class Party implements ChannelObserver {
                 balance = balance - ((MoneyTransaction) transaction).getMoney();
             }
             lastTransactionMoney = transaction;
+            blocks.putIfAbsent(lastTransactionMoney, false);
         } else if (transaction.getTransactionType() != TransactionType.MONEY) {
             lastTransactionProduct = transaction;
+            blocks.putIfAbsent(lastTransactionProduct, true);
         }
     }
 
@@ -186,13 +192,19 @@ public abstract class Party implements ChannelObserver {
     }
 
     protected void requestPayment(Request request){
-        if(request.getRespondingParty() != this){
-            System.out.println("You are not responsible for this request");
-            return;
+//        if(request.getRespondingParty() != this){
+//            System.out.println("You are not responsible for this request");
+//            return;
+//        }
+        if(moneyChannel == null){
+            moneyChannel = new MoneyChannel(TransactionType.MONEY);
+            moneyChannel.attach(request.getRespondingParty());
+            moneyChannel.attach(request.getCreator());
         }
-        moneyChannel.addPaymentTransaction(new Payment(this,
+        Payment payment = new Payment(this,
                 request.getRespondingParty(),
-                request.getCost()));
+                request.getCost());
+        moneyChannel.addPaymentTransaction(payment);
         request.setPaid();
     }
 
