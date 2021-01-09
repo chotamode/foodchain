@@ -32,5 +32,5 @@ public class MoneyChannel extends Channel{
         this.lastTransaction = new MoneyTransaction(payment.getSender(),
                 payment.getReciever(), payment.getMoney(), this.lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
-    };
+    }
 }

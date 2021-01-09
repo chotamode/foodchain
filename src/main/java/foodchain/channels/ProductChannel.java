@@ -1,6 +1,5 @@
 package foodchain.channels;
 
-import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
 import foodchain.party.ChannelObserver;
 import foodchain.party.Party;
@@ -9,6 +8,7 @@ import foodchain.product.Product;
 import foodchain.product.Products.ProductType;
 import foodchain.transactions.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +18,7 @@ import java.util.UUID;
  */
 public class ProductChannel extends Channel {
 
+    private List<UUID> productIDs = new ArrayList<>();
     List<Request> requests = new LinkedList<Request>();
 
     public ProductChannel(TransactionType type) {
@@ -46,7 +47,7 @@ public class ProductChannel extends Channel {
             System.out.println("You have to be " + PartyType.DISTRIBUTOR);
             return;
         }
-        lastTransaction = new DistributionTransaction(creator, receiver, distributor, product.getProductType(), lastTransaction);
+        lastTransaction = new DistributionTransaction(creator, receiver, distributor, product, lastTransaction);
     }
 
     /**
@@ -69,20 +70,24 @@ public class ProductChannel extends Channel {
             return;
         }
         TransactionIterator transactionIterator = new TransactionIterator(lastTransaction);
-        Transaction t = lastTransaction;
-        while(t != null){
-            if(t.getTransactionType() == TransactionType.SELL){
-                if(((SellTransaction)t).getUuid() == uuid){
-
+        while(transactionIterator.transaction != null){
+            if(transactionIterator.transaction.getTransactionType() == TransactionType.SELL){
+                if(productIDs.contains(((SellTransaction) transactionIterator.transaction).getUuid())){
+                    System.out.println("Double-spending detected from: " + ((SellTransaction) transactionIterator.transaction).getCreator() + "to: "
+                            + ((SellTransaction) transactionIterator.transaction).getReceiver());
+                }else{
+                    productIDs.add(((SellTransaction) transactionIterator.transaction).getUuid());
                 }
             }
+            transactionIterator.next();
         }
 
         lastTransaction = new SellTransaction(creator, receiver, uuid, productType, lastTransaction);
+        notifyAllParties(lastTransaction, subscribers);
     }
 
     /**
-     *Add StoreTransaction
+     * Add StoreTransaction
      */
     public void addStoreTransaction(Party creator, int days, Product product){
         if(creator.getPartyType() != PartyType.STORAGE){
