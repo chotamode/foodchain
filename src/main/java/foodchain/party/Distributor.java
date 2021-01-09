@@ -55,7 +55,7 @@ public class Distributor extends Party{
             System.out.println("Request is not paid.");
             return;
         }
-
+//        productChannel.addDistributionTransaction(request);
     }
 
     private void deliverProduct(Party sender, Party receiver){

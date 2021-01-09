@@ -23,7 +23,6 @@ public class Customer extends Party {
 
     @Override
     protected boolean canProcessRequest(Request request) {
-        System.out.println("Customer can't process request");
         return false;
     }
 

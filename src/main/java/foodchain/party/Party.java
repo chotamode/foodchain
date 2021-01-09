@@ -78,7 +78,7 @@ public abstract class Party implements ChannelObserver {
 
     protected void receiveProduct(Product product){
         this.products.add(product);
-    };
+    }
 
     public abstract PartyType getPartyType();
 
@@ -156,8 +156,10 @@ public abstract class Party implements ChannelObserver {
         if (transaction.getTransactionType() == TransactionType.MONEY) {
             if (((MoneyTransaction) transaction).getReciever() == this) {
                 balance = balance + ((MoneyTransaction) transaction).getMoney();
+                System.out.println(this.name + " has paid!");
             } else if (transaction.getCreator() == this) {
                 balance = balance - ((MoneyTransaction) transaction).getMoney();
+                System.out.println(this.name + " has received money!");
             }
             lastTransactionMoney = transaction;
             blocks.putIfAbsent(lastTransactionMoney, false);
@@ -196,6 +198,7 @@ public abstract class Party implements ChannelObserver {
 //            System.out.println("You are not responsible for this request");
 //            return;
 //        }
+        System.out.println("Requesting payment");
         if(moneyChannel == null){
             moneyChannel = new MoneyChannel(TransactionType.MONEY);
             moneyChannel.attach(request.getRespondingParty());

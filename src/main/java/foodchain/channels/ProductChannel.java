@@ -1,5 +1,6 @@
 package foodchain.channels;
 
+import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Request;
 import foodchain.party.ChannelObserver;
 import foodchain.party.Party;
@@ -8,33 +9,29 @@ import foodchain.product.Product;
 import foodchain.product.Products.ProductType;
 import foodchain.transactions.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The type Product channel.
  */
 public class ProductChannel extends Channel {
 
-    private List<UUID> productIDs = new ArrayList<>();
-    List<Request> requests = new LinkedList<Request>();
+    List<Request> requests = new LinkedList<>();
 
     public ProductChannel(TransactionType type) {
         super(type);
-        this.subscribers = new LinkedList<ChannelObserver>();
+        this.subscribers = new LinkedList<>();
     }
 
     @Override
     public void notifyAllParties(Request request) {
-        for (ChannelObserver s:subscribers
+        for (ChannelObserver s : subscribers
         ) {
             s.update(request);
         }
     }
 
-    public void addRequest(Request request){
+    public void addRequest(Request request) {
         notifyAllParties(request);
         this.requests.add(request);
     }
@@ -42,8 +39,8 @@ public class ProductChannel extends Channel {
     /**
      * Add DistributionTransaction
      */
-    public void addDistributionTransaction(Party creator, Party receiver,Party distributor, Product product, float amount){
-        if(creator.getPartyType() != PartyType.DISTRIBUTOR){
+    public void addDistributionTransaction(Party creator, Party receiver, Party distributor, Product product) {
+        if (creator.getPartyType() != PartyType.DISTRIBUTOR) {
             System.out.println("You have to be " + PartyType.DISTRIBUTOR);
             return;
         }
@@ -51,10 +48,10 @@ public class ProductChannel extends Channel {
     }
 
     /**
-     *Add ProcessTransaction
+     * Add ProcessTransaction
      */
-    public void addProcessTransaction(Party creator, Product product){
-        if(creator.getPartyType() != PartyType.PROCESSOR){
+    public void addProcessTransaction(Party creator, Product product) {
+        if (creator.getPartyType() != PartyType.PROCESSOR) {
             System.out.println("You have to be " + PartyType.PROCESSOR);
             return;
         }
@@ -62,21 +59,33 @@ public class ProductChannel extends Channel {
     }
 
     /**
-     *Add SellTransaction
+     * Add SellTransaction
      */
-    public void addSellTransaction(Party creator, Party receiver, UUID uuid, ProductType productType){
-        if(creator.getPartyType() == PartyType.DISTRIBUTOR && creator.getPartyType() == PartyType.CUSTOMER){
+    public void addSellTransaction(Party creator, Party receiver, UUID uuid, ProductType productType) {
+        if (creator.getPartyType() == PartyType.DISTRIBUTOR && creator.getPartyType() == PartyType.CUSTOMER) {
             System.out.println("You are not allowed to sell");
             return;
         }
         TransactionIterator transactionIterator = new TransactionIterator(lastTransaction);
-        while(transactionIterator.transaction != null){
-            if(transactionIterator.transaction.getTransactionType() == TransactionType.SELL){
-                if(productIDs.contains(((SellTransaction) transactionIterator.transaction).getUuid())){
-                    System.out.println("Double-spending detected from: " + ((SellTransaction) transactionIterator.transaction).getCreator() + "to: "
-                            + ((SellTransaction) transactionIterator.transaction).getReceiver());
-                }else{
-                    productIDs.add(((SellTransaction) transactionIterator.transaction).getUuid());
+
+        while (transactionIterator.getTransaction().getPreviousTransaction() != null) {
+            if (transactionIterator.getTransaction().getTransactionType() == TransactionType.SELL) {
+
+                if (((SellTransaction) transactionIterator.getTransaction()).getUuid() == uuid) {
+                    System.out.println("Double-spending detected from: " + (transactionIterator.getTransaction()).getCreator() + "to: "
+                            + ((SellTransaction) transactionIterator.getTransaction()).getReceiver());
+                    if(doubleSpending.containsKey(creator)){
+                        for (Map.Entry<Party, Integer> entry : doubleSpending.entrySet()
+                        ) {
+                            if (entry.getKey() == creator) {
+                                entry.setValue(entry.getValue() + 1);
+                            }
+                        }
+                    }else{
+                        doubleSpending.put(creator, 1);
+                    }
+                    // GENERATE REPORT
+//                    return;
                 }
             }
             transactionIterator.next();
@@ -84,13 +93,17 @@ public class ProductChannel extends Channel {
 
         lastTransaction = new SellTransaction(creator, receiver, uuid, productType, lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
+
+        Request request = new DeliveryRequest(creator, receiver, productType, PartyType.DISTRIBUTOR);
+        addRequest(request);
+        System.out.println("Added Sell Transaction");
     }
 
     /**
      * Add StoreTransaction
      */
-    public void addStoreTransaction(Party creator, int days, Product product){
-        if(creator.getPartyType() != PartyType.STORAGE){
+    public void addStoreTransaction(Party creator, int days, Product product) {
+        if (creator.getPartyType() != PartyType.STORAGE) {
             System.out.println("You have to be " + PartyType.STORAGE);
             return;
         }
@@ -100,8 +113,8 @@ public class ProductChannel extends Channel {
     /**
      * Add CreateTransaction
      */
-    public void addCreateTransaction(Party creator, Product product){
-        if(creator.getPartyType() != PartyType.FARMER){
+    public void addCreateTransaction(Party creator, Product product) {
+        if (creator.getPartyType() != PartyType.FARMER) {
             System.out.println("You have to be " + PartyType.FARMER);
             return;
         }

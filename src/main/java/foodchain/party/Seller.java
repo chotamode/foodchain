@@ -27,7 +27,7 @@ public class Seller extends Party{
                 return;
             }
             productChannel.addSellTransaction(this, request.getCreator(),  this.currentProduct.getUuid(), this.currentProduct.getProductType());
-            sendDeliveryRequest(this, request.getCreator(), request.getProductType());
+//            sendDeliveryRequest(this, request.getCreator(), request.getProductType());
 
         }else{
             System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
