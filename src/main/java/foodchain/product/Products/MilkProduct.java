@@ -17,14 +17,4 @@ public class MilkProduct extends ProductType{
     public float getQuantity() {
         return this.quantity;
     }
-
-    @Override
-    public void reduce(float amount) {
-        this.quantity = this.quantity - amount;
-    }
-
-    @Override
-    public float getCost() {
-        return this.productTypes.getCost()  * this.quantity;
-    }
 }
