@@ -22,8 +22,8 @@ public abstract class Party implements ChannelObserver {
     protected final String name;
     protected List<Product> products;
     protected List<Request> requests;
-    protected MoneyChannel moneyChannel;
-    protected ProductChannel productChannel;
+    protected static MoneyChannel moneyChannel;
+    protected static ProductChannel productChannel;
     protected Map<Transaction, Boolean> blocks; //payments transactions, boolean means if money accepted
     protected Transaction lastTransactionMoney = null;
     protected Transaction lastTransactionProduct = null;
@@ -31,7 +31,7 @@ public abstract class Party implements ChannelObserver {
     protected Product currentProduct;
 
     protected Party(String name, int balance, int margin) {
-        if(margin > 100){
+        if (margin > 100) {
             margin = margin % 100;
         }
         this.name = name;
@@ -65,26 +65,32 @@ public abstract class Party implements ChannelObserver {
     }
 
     protected void giveProduct(Party receiver, ProductType productType){
-        Product product = null;
-        for (Product p: products
-             ) {
-            if(p.getProductType().getProductTypes() == productType.getProductTypes()
-                    && productType.getQuantity() <= p.getProductType().getQuantity()){
-                product = p.split(productType.getQuantity());
+        for (Product p : products
+        ) {
+            if (p.getProductType().getProductTypes() == productType.getProductTypes()
+                    && productType.getQuantity() <= p.getProductType().getQuantity()) {
                 receiver.receiveProduct(p.split(productType.getQuantity()));
+                this.clearTheCounters();
             }
         }
     }
 
-    protected void receiveProduct(Product product){
-        this.products.add(product);
+    protected void clearTheCounters(){
+        this.products.removeIf(p -> p.getProductType().getQuantity() == 0);
+    }
+    protected void receiveProduct(Product product) {
+        if(this.products.contains(product)){
+            this.products.get(this.products.indexOf(product)).getProductType().addToCounters(product.getProductType().getQuantity());
+        }else{
+            this.products.add(product);
+        }
     }
 
     public abstract PartyType getPartyType();
 
     protected abstract void processRequest(Request request);
 
-    protected boolean canProcessRequest(Request request){
+    protected boolean canProcessRequest(Request request) {
         return request.getPartyType() == this.getPartyType();
     }
 
@@ -100,21 +106,8 @@ public abstract class Party implements ChannelObserver {
         return false;
     }
 
-    protected void sendDeliveryRequest(Party sender, Party receiver, ProductType productType){
-        if(this.getPartyType() == PartyType.DISTRIBUTOR){
-            System.out.println("Distributor can't create Distribution Request");
-            return;
-        }
-        if (productChannel != null) {
-            Request request = new DeliveryRequest(sender, receiver, productType, PartyType.DISTRIBUTOR);
-            productChannel.addRequest(request);
-        } else {
-            System.out.println("You don't subscribed to product channel");
-        }
-    }
-
     protected void sendRequest(ProductType productType) {
-        if(this.balance < productType.getCost()){
+        if (this.balance < productType.getCost()) {
             System.out.println("You don't have enough money");
             return;
         }
@@ -137,16 +130,16 @@ public abstract class Party implements ChannelObserver {
 
     @Override
     public void detach(Channel channel) {
-        if (channel instanceof MoneyChannel && channel == this.moneyChannel) {
+        if (channel instanceof MoneyChannel && channel == moneyChannel) {
             moneyChannel = null;
-        } else if (channel instanceof ProductChannel && channel == this.productChannel) {
+        } else if (channel instanceof ProductChannel && channel == productChannel) {
             productChannel = null;
         }
     }
 
     @Override
     public void update(Request request) {
-        if(canProcessRequest(request)){
+        if (canProcessRequest(request)) {
             requests.add(request);
         }
     }
@@ -156,10 +149,10 @@ public abstract class Party implements ChannelObserver {
         if (transaction.getTransactionType() == TransactionType.MONEY) {
             if (((MoneyTransaction) transaction).getReciever() == this) {
                 balance = balance + ((MoneyTransaction) transaction).getMoney();
-                System.out.println(this.name + " has paid!");
+                System.out.println(this.name + " has received money!");
             } else if (transaction.getCreator() == this) {
                 balance = balance - ((MoneyTransaction) transaction).getMoney();
-                System.out.println(this.name + " has received money!");
+                System.out.println(this.name + " has paid!");
             }
             lastTransactionMoney = transaction;
             blocks.putIfAbsent(lastTransactionMoney, false);
@@ -193,17 +186,18 @@ public abstract class Party implements ChannelObserver {
         return products;
     }
 
-    protected void requestPayment(Request request){
+    protected void requestPayment(Request request) {
 //        if(request.getRespondingParty() != this){
 //            System.out.println("You are not responsible for this request");
 //            return;
 //        }
         System.out.println("Requesting payment");
-        if(moneyChannel == null){
+        if (moneyChannel == null) {
             moneyChannel = new MoneyChannel(TransactionType.MONEY);
-            moneyChannel.attach(request.getRespondingParty());
-            moneyChannel.attach(request.getCreator());
         }
+        moneyChannel.attach(request.getRespondingParty());
+        moneyChannel.attach(request.getCreator());
+
         Payment payment = new Payment(this,
                 request.getRespondingParty(),
                 request.getCost());

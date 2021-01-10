@@ -16,14 +16,4 @@ public class MeatProduct extends ProductType{
     public float getQuantity() {
         return this.quantity;
     }
-
-    @Override
-    public void reduce(float amount) {
-        this.quantity = quantity - amount;
-    }
-
-    @Override
-    public float getCost() {
-        return this.productTypes.getCost() * this.quantity;
-    }
 }

@@ -13,13 +13,21 @@ public abstract class ProductType {
     ProductType(float quantity, ProductTypes productTypes){
         this.quantity = quantity;
         this.productTypes = productTypes;
-    };
+    }
 
     public abstract ProductTypes getProductTypes();
 
     public abstract float getQuantity();
 
-    public abstract void reduce(float amount);
+    public void reduce(float amount){
+        this.quantity = this.quantity - amount;
+    }
 
-    public abstract float getCost();
+    public void addToCounters(float amount){
+        this.quantity = this.quantity + amount;
+    }
+
+    public float getCost(){
+        return this.productTypes.getCost() * this.quantity;
+    }
 }

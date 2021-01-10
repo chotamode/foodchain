@@ -50,11 +50,11 @@ public class Request {
     }
 
     public float getDeliveryCost(){
-        return getCost() * respondingDistributor.getMargin();
+        return getCost() * (1 + (float)respondingDistributor.getMargin()/100);
     }
 
     public float getCost(){
-        return productType.getCost() * (1 + (respondingParty.getMargin()/100));
+        return productType.getCost() * (1 + (float)(respondingParty.getMargin()/100));
     }
 
     public ProductType getProductType() {

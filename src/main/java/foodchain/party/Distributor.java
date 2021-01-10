@@ -1,5 +1,7 @@
 package foodchain.party;
 
+import foodchain.channels.MoneyChannel;
+import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
 import foodchain.product.Product;
@@ -21,8 +23,15 @@ public class Distributor extends Party{
             System.out.println("You are not delivering this product.");
             return;
         }
-        getMoneyChannel().addPaymentTransaction(new Payment(this,
-                request.getRespondingParty(),
+        System.out.println("Requesting payment");
+        if (moneyChannel == null) {
+            moneyChannel = new MoneyChannel(TransactionType.MONEY);
+        }
+        moneyChannel.attach(request.getCreator());
+        moneyChannel.attach(request.getRespondingParty());
+        moneyChannel.attach(this);
+        moneyChannel.addPaymentTransaction(new Payment(request.getCreator(),
+                this,
                 request.getDeliveryCost()));
         request.setPaid();
     }
@@ -31,7 +40,8 @@ public class Distributor extends Party{
     protected boolean requestPaid(Request request) {
         for (Map.Entry<Transaction, Boolean> entry : blocks.entrySet()
         ) {
-            if (request.getRespondingDistributor() == ((MoneyTransaction) entry.getKey()).getReciever()
+            if (entry.getKey().getTransactionType() == TransactionType.MONEY
+                    && request.getRespondingDistributor() == ((MoneyTransaction) entry.getKey()).getReciever()
                     && request.getRespondingDistributor() == this
                     && request.getCost() == ((MoneyTransaction) entry.getKey()).getMoney()
                     && !entry.getValue()) {
@@ -48,17 +58,29 @@ public class Distributor extends Party{
     }
 
     @Override
-    public void processRequest(Request request) {
+    public void processRequest(Request request){
         request.setRespondingDistributor(this);
-        request.getRespondingParty().requestPayment(request);
+        request.setRespondingParty(this);
+        requestPayment(request);
         if(!requestPaid(request)){
             System.out.println("Request is not paid.");
             return;
         }
-//        productChannel.addDistributionTransaction(request);
+
+        request.getCreator().giveProduct(this, request.getProductType());
+
+        if(!productAvailable(request)){
+            System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
+        }
+
+        productChannel.addDistributionTransaction(request.getCreator(),
+                ((DeliveryRequest)request).getReceiver(),
+                this, currentProduct);
+        deliverProduct(((DeliveryRequest) request).getReceiver());
     }
 
-    private void deliverProduct(Party sender, Party receiver){
-
+    private void deliverProduct(Party receiver){
+        receiver.receiveProduct(currentProduct);
+        products.clear();
     }
 }

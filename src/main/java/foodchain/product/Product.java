@@ -6,7 +6,7 @@ import foodchain.product.ParametersStrategy.MilkParametersStrategy;
 import foodchain.product.ParametersStrategy.ParametersStrategy;
 import foodchain.product.ParametersStrategy.PlantParametersStrategy;
 import foodchain.product.ProductState.ProductState;
-import foodchain.product.Products.ProductType;
+import foodchain.product.Products.*;
 
 import java.util.UUID;
 
@@ -26,14 +26,11 @@ public class Product {
 
     public Product(ProductType productType) {
         this.productType = productType;
-        if (this.productType.getClass().getName().equals("MeatProduct")) {
-            setParametersStrategy(new MeatParametersStrategy(this));
-        } else if (this.productType.getClass().getName().equals("MilkProduct")) {
-            setParametersStrategy(new MilkParametersStrategy(this));
-        } else if (this.productType.getClass().getName().equals("PlantProduct")) {
-            setParametersStrategy(new PlantParametersStrategy(this));
+        switch (this.productType.getClass().getName()) {
+            case "foodchain.product.Products.MeatProduct" -> setParametersStrategy(new MeatParametersStrategy(this));
+            case "foodchain.product.Products.MilkProduct" -> setParametersStrategy(new MilkParametersStrategy(this));
+            case "foodchain.product.Products.PlantProduct" -> setParametersStrategy(new PlantParametersStrategy(this));
         }
-
     }
 
     public Product split(float amount) {
@@ -41,7 +38,15 @@ public class Product {
             System.out.println("Not enough product");
             return null;
         }
-        Product product = new Product(this.productType);
+        ProductType newProductType = switch (this.productType.getClass().getName()) {
+            case "foodchain.product.Products.MeatProduct" -> new MeatProduct(this.productType.getQuantity(), (MeatProducts) this.productType.getProductTypes());
+            case "foodchain.product.Products.MilkProduct" -> new MilkProduct(this.productType.getQuantity(), (MilkProducts) this.productType.getProductTypes());
+            case "foodchain.product.Products.PlantProduct" -> new PlantProduct(this.productType.getQuantity(), (PlantProducts) this.productType.getProductTypes());
+            default -> null;
+        };
+
+        Product product = new Product(newProductType);
+
         product.productType.reduce(this.productType.getQuantity() - amount);
         this.productType.reduce(amount);
         return product;

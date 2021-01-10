@@ -31,14 +31,20 @@ public abstract class Channel implements PartyObservable{
 
     @Override
     public void attach(ChannelObserver channelObserver) {
-        subscribers.add(channelObserver);
-        channelObserver.attach(this);
+        if(!subscribers.contains(channelObserver)){
+            subscribers.add(channelObserver);
+            channelObserver.attach(this);
+        }
+
     }
 
     @Override
     public void detach(ChannelObserver channelObserver) {
-        subscribers.remove(channelObserver);
-        channelObserver.detach(this);
+        if(subscribers.contains(channelObserver)){
+            subscribers.remove(channelObserver);
+            channelObserver.detach(this);
+        }
+
     }
 
 }

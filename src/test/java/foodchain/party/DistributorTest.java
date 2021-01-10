@@ -17,10 +17,18 @@ class DistributorTest {
         ProductChannel productChannel = new ProductChannel(TransactionType.PRODUCT);
         Party seller = new Seller("Bob", 900, 30);
         Party customer = new Customer("Ass", 10000);
+        Party distributor = new Distributor("Taxi", 0, 20);
+
         productChannel.attach(seller);
         productChannel.attach(customer);
-        productChannel.addRequest(new Request(customer, new MeatProduct(5, MeatProducts.BEEF), PartyType.SELLER));
+        productChannel.attach(distributor);
+
+        productChannel.addRequest(new Request(customer, new MeatProduct(2, MeatProducts.BEEF), PartyType.SELLER));
         seller.products.add(new Product(new MeatProduct(10, MeatProducts.BEEF)));
-        seller.processRequest(new Request(customer, new MeatProduct(5, MeatProducts.BEEF), PartyType.SELLER));
+        seller.fulfillRequest(new Request(customer, new MeatProduct(2, MeatProducts.BEEF), PartyType.SELLER));
+
+        Request request1 = distributor.requests.get(0);
+        distributor.requests.clear();
+        distributor.processRequest(request1);
     }
 }
