@@ -16,11 +16,9 @@ public class TransactionIterator{
         return this.transaction != null;
     }
 
-    public Transaction next() {
+    public void next() {
         if(hasNext()){
-            return transaction.getPreviousTransaction();
-        }else{
-            return null;
+            this.transaction = transaction.getPreviousTransaction();
         }
     }
 

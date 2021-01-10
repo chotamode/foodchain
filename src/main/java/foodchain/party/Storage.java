@@ -1,12 +1,13 @@
 package foodchain.party;
 
+import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Request;
 import foodchain.product.Product;
 
 /**
  * The type Storage.
  */
-public class Storage extends Party{
+public class Storage extends Party {
 
     /**
      * Instantiates a new Storage.
@@ -25,10 +26,19 @@ public class Storage extends Party{
 
     @Override
     public void processRequest(Request request) {
+        if (productAvailable(request)) {
+            request.setRespondingParty(this);
+            request.getCreator().requestPayment(request);
+            if (!requestPaid(request)) {
+                System.out.println("Request is not paid.");
+                return;
+            }
 
-    }
-
-    public void sendProduct(Product product) {
-
+            Request nextRequest = new DeliveryRequest(this, request.getCreator(), request.getProductType(), PartyType.DISTRIBUTOR);
+            productChannel.addRequest(nextRequest);
+        } else {
+            System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
+            productChannel.addRequest(new Request(this, request.getProductType(), PartyType.FARMER));
+        }
     }
 }

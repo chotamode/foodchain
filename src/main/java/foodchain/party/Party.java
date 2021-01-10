@@ -6,22 +6,20 @@ import foodchain.channels.ProductChannel;
 import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
+import foodchain.party.farmer.Farmer;
 import foodchain.product.Product;
 import foodchain.product.Products.ProductType;
 import foodchain.transactions.MoneyTransaction;
 import foodchain.transactions.Transaction;
 import foodchain.transactions.TransactionType;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Party implements ChannelObserver {
     protected float balance;
     protected final String name;
     protected List<Product> products;
-    protected List<Request> requests;
+    protected Queue<Request> requests;
     protected static MoneyChannel moneyChannel;
     protected static ProductChannel productChannel;
     protected Map<Transaction, Boolean> blocks; //payments transactions, boolean means if money accepted
@@ -42,10 +40,19 @@ public abstract class Party implements ChannelObserver {
         this.blocks = new HashMap<>();
     }
 
+    public void addTypeofTransaction(Party creator){
+        if(this instanceof Processor){
+            productChannel.addProcessTransaction(creator, creator.currentProduct);
+        }else if(this instanceof Storage){
+            productChannel.addStoreTransaction(creator, creator.currentProduct);
+        }
+    }
+
     protected boolean requestPaid(Request request) {
         for (Map.Entry<Transaction, Boolean> entry : blocks.entrySet()
         ) {
-            if (request.getRespondingParty() == ((MoneyTransaction) entry.getKey()).getReciever()
+            if (entry.getKey().getTransactionType() == TransactionType.MONEY
+                    && request.getRespondingParty() == ((MoneyTransaction) entry.getKey()).getReciever()
                     && request.getRespondingParty() == this
                     && request.getCost() == ((MoneyTransaction) entry.getKey()).getMoney()
                     && !entry.getValue()) {
@@ -186,7 +193,7 @@ public abstract class Party implements ChannelObserver {
         return products;
     }
 
-    protected void requestPayment(Request request) {
+    public void requestPayment(Request request) {
 //        if(request.getRespondingParty() != this){
 //            System.out.println("You are not responsible for this request");
 //            return;

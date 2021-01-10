@@ -7,15 +7,17 @@ import javax.print.attribute.standard.PrinterMessageFromOperator;
 
 public abstract class ProductState {
 
-    protected Product product;
+    protected static Product product;
 
     public ProductState(Product product) {
+        ProductState.product = product;
         product.setProductState(this);
     }
 
-    abstract void setDelivering();
-    abstract void setMade();
-    abstract void setProcessing();
-    abstract void setSold();
-    abstract void setStored();
+    public abstract void setDelivering();
+    public abstract void setMade();
+    public abstract void setProcessing();
+    public abstract void setSold();
+    public abstract void setStored();
+    public abstract void setPickUp();
 }

@@ -18,7 +18,7 @@ public class Distributor extends Party{
     }
 
     @Override
-    protected void requestPayment(Request request){
+    public void requestPayment(Request request){
         if(request.getRespondingDistributor()!= this){
             System.out.println("You are not delivering this product.");
             return;
@@ -81,6 +81,7 @@ public class Distributor extends Party{
 
     private void deliverProduct(Party receiver){
         receiver.receiveProduct(currentProduct);
+
         products.clear();
     }
 }
