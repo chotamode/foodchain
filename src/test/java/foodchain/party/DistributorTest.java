@@ -8,6 +8,8 @@ import foodchain.product.Products.MeatProducts;
 import foodchain.transactions.TransactionType;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLOutput;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DistributorTest {
@@ -15,7 +17,7 @@ class DistributorTest {
     @Test
     void processRequest() {
         ProductChannel productChannel = new ProductChannel(TransactionType.PRODUCT);
-        Party seller = new Seller("Bob", 900, 30);
+        Party seller = new Seller("Bob", 900, 70);
         Party customer = new Customer("Ass", 10000);
         Party distributor = new Distributor("Taxi", 0, 20);
 
@@ -27,8 +29,10 @@ class DistributorTest {
         seller.products.add(new Product(new MeatProduct(10, MeatProducts.BEEF)));
         seller.fulfillRequest(new Request(customer, new MeatProduct(2, MeatProducts.BEEF), PartyType.SELLER));
 
-        Request request1 = distributor.requests.get(0);
+        Request request1 = distributor.requests.remove();
         distributor.requests.clear();
+
         distributor.processRequest(request1);
+        System.out.println("Hoho, the end!");
     }
 }

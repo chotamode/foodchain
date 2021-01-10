@@ -1,5 +1,6 @@
 package foodchain.party.farmer;
 
+import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Request;
 import foodchain.party.Party;
 import foodchain.party.PartyType;
@@ -12,16 +13,12 @@ public class Farmer extends Party {
     MilkFactory milkFactory = new MilkFactory();
     PlantFactory plantFactory = new PlantFactory();
 
-    Product create(float q, MilkProducts milkProducts){
-        return milkFactory.factoryMethod(q, milkProducts);
-    }
-
-    Product create(float q, MeatProducts meatProducts){
-        return meatFactory.factoryMethod(q, meatProducts);
-    }
-
-    Product create(float q, PlantProducts plantProducts){
-        return plantFactory.factoryMethod(q, plantProducts);
+    Product create(float q, ProductTypes productTypes) {
+        if (productTypes instanceof MeatProducts) {
+            return meatFactory.factoryMethod(q, productTypes);
+        } else if (productTypes instanceof MilkProducts) {
+            return milkFactory.factoryMethod(q, productTypes);
+        } else return plantFactory.factoryMethod(q, productTypes);
     }
 
     public Farmer(String name, int balance, int margin) {
@@ -35,10 +32,15 @@ public class Farmer extends Party {
 
     @Override
     public void processRequest(Request request) {
-
-    }
-
-    public void sendProduct(Product product) {
-
+        request.setRespondingParty(this);
+        request.getCreator().requestPayment(request);
+        if (!requestPaid(request)) {
+            System.out.println("Request is not paid.");
+            return;
+        }
+        this.currentProduct = create(request.getAmount(), request.getProductType().getProductTypes());
+        products.add(currentProduct);
+        productChannel.addCreateTransaction(this, currentProduct);
+        productChannel.addRequest(new DeliveryRequest(this, request.getCreator(), currentProduct.getProductType(), PartyType.DISTRIBUTOR));
     }
 }

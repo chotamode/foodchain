@@ -9,32 +9,36 @@ public class SoldState extends ProductState{
     }
 
     @Override
-    void setDelivering() {
+    public void setDelivering() {
+        System.out.println(product.toString() + " is already delivered!");
+    }
+
+    @Override
+    public void setMade() {
         System.out.println(product.toString() + " SOLD!");
     }
 
     @Override
-    void setMade() {
+    public void setProcessing() {
         System.out.println(product.toString() + " SOLD!");
     }
 
     @Override
-    void setProcessing() {
-        System.out.println(product.toString() + " SOLD!");
-    }
-
-    @Override
-    void setSold() {
+    public void setSold() {
         if(product.getProductState() instanceof SoldState){
             System.out.println(product.toString() + " SOLD!");
         }else{
             product.setProductState(new SoldState(product));
         }
-
     }
 
     @Override
-    void setStored() {
+    public void setStored() {
+        System.out.println(product.toString() + " SOLD!");
+    }
+
+    @Override
+    public void setPickUp() {
         System.out.println(product.toString() + " SOLD!");
     }
 }

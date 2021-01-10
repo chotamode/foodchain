@@ -45,16 +45,17 @@ public class Request {
         this.paid = true;
     }
 
+
     public boolean isPaid() {
         return paid;
     }
 
     public float getDeliveryCost(){
-        return getCost() * (1 + (float)respondingDistributor.getMargin()/100);
+        return productType.getCost() * ((float) 1 + (respondingDistributor.getMargin()/(float)100));
     }
 
     public float getCost(){
-        return productType.getCost() * (1 + (float)(respondingParty.getMargin()/100));
+        return productType.getCost() * ((float) 1 + ((float)respondingParty.getMargin()/(float)100));
     }
 
     public ProductType getProductType() {

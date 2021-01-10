@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Channel implements PartyObservable{
+public abstract class Channel implements PartyObservable {
 
     protected TransactionType transactionType;
     protected GenesisTransaction genesisTransaction = new GenesisTransaction(null, null);
@@ -31,7 +31,7 @@ public abstract class Channel implements PartyObservable{
 
     @Override
     public void attach(ChannelObserver channelObserver) {
-        if(!subscribers.contains(channelObserver)){
+        if (!subscribers.contains(channelObserver)) {
             subscribers.add(channelObserver);
             channelObserver.attach(this);
         }
@@ -40,7 +40,7 @@ public abstract class Channel implements PartyObservable{
 
     @Override
     public void detach(ChannelObserver channelObserver) {
-        if(subscribers.contains(channelObserver)){
+        if (subscribers.contains(channelObserver)) {
             subscribers.remove(channelObserver);
             channelObserver.detach(this);
         }

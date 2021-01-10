@@ -2,25 +2,24 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
-public class DeliveringState extends ProductState{
-
-    public DeliveringState(Product product) {
+public class PickUp extends ProductState{
+    public PickUp(Product product) {
         super(product);
     }
 
     @Override
     public void setDelivering() {
-        System.out.println(product.toString() + " is already delivered!");
+        System.out.println(product.toString() + "is ready to pick-Up!");
     }
 
     @Override
     public void setMade() {
-        System.out.println(product.toString() + " already made!");
+        System.out.println(product.toString() + "is ready to pick-Up!");
     }
 
     @Override
     public void setProcessing() {
-        product.setProductState(new ProcessingState(product));
+        System.out.println(product.toString() + "is ready to pick-Up!");
     }
 
     @Override
@@ -30,11 +29,11 @@ public class DeliveringState extends ProductState{
 
     @Override
     public void setStored() {
-        product.setProductState(new StoredState(product));
+        System.out.println(product.toString() + "is ready to pick-Up!");
     }
 
     @Override
     public void setPickUp() {
-        product.setProductState(new PickUp(product));
+        System.out.println(product.toString() + "is ready to pick-Up!");
     }
 }

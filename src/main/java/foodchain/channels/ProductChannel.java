@@ -2,10 +2,10 @@ package foodchain.channels;
 
 import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Request;
-import foodchain.party.ChannelObserver;
-import foodchain.party.Party;
-import foodchain.party.PartyType;
+import foodchain.party.*;
+import foodchain.party.farmer.Farmer;
 import foodchain.product.Product;
+import foodchain.product.ProductState.*;
 import foodchain.product.Products.ProductType;
 import foodchain.transactions.*;
 
@@ -40,28 +40,53 @@ public class ProductChannel extends Channel {
      * Add DistributionTransaction
      */
     public void addDistributionTransaction(Party creator, Party receiver, Party distributor, Product product) {
-        if (creator.getPartyType() != PartyType.DISTRIBUTOR) {
+        if (distributor.getPartyType() != PartyType.DISTRIBUTOR) {
             System.out.println("You have to be " + PartyType.DISTRIBUTOR);
             return;
         }
+        product.setProductState((new DeliveringState(product)));
+
+        if(receiver instanceof Customer){
+            product.getProductState().setSold();
+        }else if(receiver instanceof Seller){
+            product.getProductState().setPickUp();
+        }else if(receiver instanceof Processor){
+            product.getProductState().setProcessing();
+        }else if(receiver instanceof Storage){
+            product.getProductState().setStored();
+        }else if(receiver instanceof Farmer){
+            product.getProductState().setMade();
+        }
+
+        receiver.addTypeofTransaction(creator);
+
         lastTransaction = new DistributionTransaction(creator, receiver, distributor, product, lastTransaction);
+        notifyAllParties(lastTransaction, subscribers);
+
+        System.out.println("Added: Distribution Transaction");
     }
 
     /**
      * Add ProcessTransaction
      */
     public void addProcessTransaction(Party creator, Product product) {
-        if (creator.getPartyType() != PartyType.PROCESSOR) {
-            System.out.println("You have to be " + PartyType.PROCESSOR);
+        if (creator.getPartyType() != PartyType.STORAGE) {
+            System.out.println("You have to be " + PartyType.STORAGE);
             return;
         }
+        product.setProductState(new ProcessingState(product));
+        product.getProductState().setDelivering();
+
         lastTransaction = new ProcessTransaction(creator, product, lastTransaction);
+        notifyAllParties(lastTransaction, subscribers);
+
+        System.out.println("Added: Process Transaction Transaction");
     }
 
     /**
      * Add SellTransaction
      */
-    public void addSellTransaction(Party creator, Party receiver, UUID uuid, ProductType productType) {
+    public void addSellTransaction(Party creator, Party receiver, Product product, ProductType productType) {
         if (creator.getPartyType() == PartyType.DISTRIBUTOR && creator.getPartyType() == PartyType.CUSTOMER) {
             System.out.println("You are not allowed to sell");
             return;
@@ -70,18 +95,17 @@ public class ProductChannel extends Channel {
 
         while (transactionIterator.getTransaction().getPreviousTransaction() != null) {
             if (transactionIterator.getTransaction().getTransactionType() == TransactionType.SELL) {
-
-                if (((SellTransaction) transactionIterator.getTransaction()).getUuid() == uuid) {
+                if (((SellTransaction) transactionIterator.getTransaction()).getUuid() == product.getUuid()) {
                     System.out.println("Double-spending detected from: " + (transactionIterator.getTransaction()).getCreator() + "to: "
                             + ((SellTransaction) transactionIterator.getTransaction()).getReceiver());
-                    if(doubleSpending.containsKey(creator)){
+                    if (doubleSpending.containsKey(creator)) {
                         for (Map.Entry<Party, Integer> entry : doubleSpending.entrySet()
                         ) {
                             if (entry.getKey() == creator) {
                                 entry.setValue(entry.getValue() + 1);
                             }
                         }
-                    }else{
+                    } else {
                         doubleSpending.put(creator, 1);
                     }
                     // GENERATE REPORT
@@ -90,24 +114,32 @@ public class ProductChannel extends Channel {
             }
             transactionIterator.next();
         }
+        product.setProductState(new SoldState(product));
+        product.getProductState().setDelivering();
 
-        lastTransaction = new SellTransaction(creator, receiver, uuid, productType, lastTransaction);
+        lastTransaction = new SellTransaction(creator, receiver, product, productType, lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
 
         Request request = new DeliveryRequest(creator, receiver, productType, PartyType.DISTRIBUTOR);
         addRequest(request);
-        System.out.println("Added Sell Transaction");
+        System.out.println("Added: Sell Transaction");
     }
 
     /**
      * Add StoreTransaction
      */
-    public void addStoreTransaction(Party creator, int days, Product product) {
-        if (creator.getPartyType() != PartyType.STORAGE) {
-            System.out.println("You have to be " + PartyType.STORAGE);
+    public void addStoreTransaction(Party creator, Product product) {
+        if (creator.getPartyType() != PartyType.FARMER) {
+            System.out.println("You have to be " + PartyType.FARMER);
             return;
         }
-        lastTransaction = new StoreTransaction(creator, days, product, lastTransaction);
+        product.setProductState(new StoredState(product));
+        product.getProductState().setDelivering();
+
+        lastTransaction = new StoreTransaction(creator, product, lastTransaction);
+        notifyAllParties(lastTransaction, subscribers);
+
+        System.out.println("Added: Store Transaction");
     }
 
     /**
@@ -118,6 +150,11 @@ public class ProductChannel extends Channel {
             System.out.println("You have to be " + PartyType.FARMER);
             return;
         }
+        product.setProductState(new MadeState(product));
+        product.getProductState().setDelivering();
         lastTransaction = new CreateProductTransaction(creator, product, lastTransaction);
+        notifyAllParties(lastTransaction, subscribers);
+
+        System.out.println("Added: Create Transaction");
     }
 }

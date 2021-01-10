@@ -9,27 +9,32 @@ public class StoredState extends ProductState{
     }
 
     @Override
-    void setDelivering() {
+    public void setDelivering() {
         product.setProductState(new DeliveringState(product));
     }
 
     @Override
-    void setMade() {
-        System.out.println(product.toString() + " already made");
+    public void setMade() {
+        System.out.println(product.toString() + " already made!");
     }
 
     @Override
-    void setProcessing() {
-        System.out.println("You should deliver first");
+    public void setProcessing() {
+        System.out.println("You should deliver first!");
     }
 
     @Override
-    void setSold() {
-        System.out.println("You should deliver first");
+    public void setSold() {
+        System.out.println("You should deliver first!");
     }
 
     @Override
-    void setStored() {
-        System.out.println("You should deliver first");
+    public void setStored() {
+        System.out.println("You should deliver first!");
+    }
+
+    @Override
+    public void setPickUp() {
+        System.out.println("You should deliver first!");
     }
 }

@@ -2,6 +2,7 @@ package foodchain.transactions;
 
 import foodchain.party.Party;
 import foodchain.product.Product;
+import foodchain.product.ProductState.ProductState;
 import foodchain.product.Products.ProductType;
 
 import java.util.UUID;
@@ -13,10 +14,10 @@ public class SellTransaction extends Transaction{
     private final UUID uuid;
     private final ProductType productType;
 
-    public SellTransaction(Party seller, Party customer, UUID uuid, ProductType productType, Transaction previousTransaction) {
+    public SellTransaction(Party seller, Party customer, Product product, ProductType productType, Transaction previousTransaction) {
         super(seller, previousTransaction);
         this.receiver = customer;
-        this.uuid = uuid;
+        this.uuid = product.getUuid();
         this.productType = productType;
     }
 
