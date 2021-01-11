@@ -9,22 +9,39 @@ import foodchain.product.Products.MeatProducts;
 import foodchain.product.Products.MilkProducts;
 import foodchain.product.Products.ProductTypes;
 
+/**
+ * The type Farmer.
+ */
 public class Farmer extends Party {
     private static final PartyType partyType = PartyType.FARMER;
     MeatFactory meatFactory = new MeatFactory();
     MilkFactory milkFactory = new MilkFactory();
     PlantFactory plantFactory = new PlantFactory();
 
+    /**
+     * Instantiates a new Farmer.
+     *
+     * @param name    the name
+     * @param balance the balance
+     * @param margin  the margin
+     */
     public Farmer(String name, int balance, int margin) {
         super(name, balance, margin);
     }
 
-    Product create(float q, ProductTypes productTypes) {
+    /**
+     * Creates product.
+     *
+     * @param quantity     the quantity(Kg or Litres(float))
+     * @param productTypes the product types ("BEEF", "MILK",....)
+     * @return the product
+     */
+    Product create(float quantity, ProductTypes productTypes) {
         if (productTypes instanceof MeatProducts) {
-            return meatFactory.factoryMethod(q, productTypes);
+            return meatFactory.factoryMethod(quantity, productTypes);
         } else if (productTypes instanceof MilkProducts) {
-            return milkFactory.factoryMethod(q, productTypes);
-        } else return plantFactory.factoryMethod(q, productTypes);
+            return milkFactory.factoryMethod(quantity, productTypes);
+        } else return plantFactory.factoryMethod(quantity, productTypes);
     }
 
     @Override

@@ -22,6 +22,11 @@ public class ProductChannel extends Channel {
     List<Request> requests = new LinkedList<>();
     Reporter reporter = Reporter.getReporter();
 
+    /**
+     * Instantiates a new Product channel.
+     *
+     * @param type the type
+     */
     public ProductChannel(TransactionType type) {
         super(type);
         this.subscribers = new LinkedList<>();
@@ -35,13 +40,24 @@ public class ProductChannel extends Channel {
         }
     }
 
+    /**
+     * Add request and notify all parties about this request.
+     *
+     * @param request the request
+     */
     public void addRequest(Request request) {
         notifyAllParties(request);
         this.requests.add(request);
     }
 
     /**
-     * Add DistributionTransaction
+     * Add Distribution Transaction to the linked list of
+     * transactions (each transaction has field previous transaction).
+     *
+     * @param creator     the creator
+     * @param receiver    the receiver
+     * @param distributor the distributor
+     * @param product     the product
      */
     public void addDistributionTransaction(Party creator, Party receiver, Party distributor, Product product) {
         if (distributor.getPartyType() != PartyType.DISTRIBUTOR) {
@@ -72,7 +88,11 @@ public class ProductChannel extends Channel {
     }
 
     /**
-     * Add ProcessTransaction
+     * Add Process Transaction to the linked list of
+     * transactions (each transaction has field previous transaction).
+     *
+     * @param creator the creator
+     * @param product the product
      */
     public void addProcessTransaction(Party creator, Product product) {
         if (creator.getPartyType() != PartyType.STORAGE) {
@@ -91,7 +111,13 @@ public class ProductChannel extends Channel {
     }
 
     /**
-     * Add SellTransaction
+     * Add Sell Transaction to the linked list of
+     * transactions (each transaction has field previous transaction).
+     *
+     * @param creator     the creator
+     * @param receiver    the receiver
+     * @param product     the product
+     * @param productType the product type
      */
     public void addSellTransaction(Party creator, Party receiver, Product product, ProductType productType) {
         if (creator.getPartyType() == PartyType.DISTRIBUTOR && creator.getPartyType() == PartyType.CUSTOMER) {
@@ -117,7 +143,7 @@ public class ProductChannel extends Channel {
                     }
                     reporter.addSecurityReport("Double-spending detected from: " + (transactionIterator.getTransaction()).getCreator() + "to: "
                             + ((SellTransaction) transactionIterator.getTransaction()).getReceiver() + ": " + doubleSpending.get(creator) + " times");
-                        return;
+                    return;
                 }
             }
             transactionIterator.next();
@@ -136,7 +162,11 @@ public class ProductChannel extends Channel {
     }
 
     /**
-     * Add StoreTransaction
+     * Add Store Transaction to the linked list of
+     * transactions (each transaction has field previous transaction).
+     *
+     * @param creator the creator
+     * @param product the product
      */
     public void addStoreTransaction(Party creator, Product product) {
         if (creator.getPartyType() != PartyType.FARMER) {
@@ -155,7 +185,11 @@ public class ProductChannel extends Channel {
     }
 
     /**
-     * Add CreateTransaction
+     * Add Create Transaction to the linked list of
+     * transactions (each transaction has field previous transaction).
+     *
+     * @param creator the creator
+     * @param product the product
      */
     public void addCreateTransaction(Party creator, Product product) {
         if (creator.getPartyType() != PartyType.FARMER) {

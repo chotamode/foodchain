@@ -16,6 +16,12 @@ public abstract class Transaction {
     private final int previousHashCode;
     private final Transaction previousTransaction;
 
+    /**
+     * Instantiates a new Transaction.
+     *
+     * @param creator             the creator
+     * @param previousTransaction the previous transaction
+     */
     public Transaction(Party creator, Transaction previousTransaction) {
         this.creator = creator;
         this.timestamp = generateTimestamp();
@@ -29,10 +35,20 @@ public abstract class Transaction {
         }
     }
 
+    /**
+     * Gets previous hash code.
+     *
+     * @return the previous hash code
+     */
     public int getPreviousHashCode() {
         return previousHashCode;
     }
 
+    /**
+     * Gets creator.
+     *
+     * @return the creator
+     */
     public Party getCreator() {
         return creator;
     }
@@ -51,18 +67,38 @@ public abstract class Transaction {
         return dateFormat.format(currentDate);
     }
 
+    /**
+     * Gets hash code.
+     *
+     * @return the hash code
+     */
     public int getHashCode() {
         return hashCode;
     }
 
+    /**
+     * Gets timestamp.
+     *
+     * @return the timestamp
+     */
     public String getTimestamp() {
         return timestamp;
     }
 
+    /**
+     * Gets previous transaction.
+     *
+     * @return the previous transaction
+     */
     public Transaction getPreviousTransaction() {
         return previousTransaction;
     }
 
+    /**
+     * Gets transaction type.
+     *
+     * @return the transaction type
+     */
     public abstract TransactionType getTransactionType();
 
     @Override

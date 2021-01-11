@@ -14,6 +14,9 @@ import foodchain.transactions.TransactionType;
 
 import java.util.*;
 
+/**
+ * The type Party.
+ */
 public abstract class Party implements ChannelObserver {
     protected static MoneyChannel moneyChannel;
     protected static ProductChannel productChannel;
@@ -28,6 +31,13 @@ public abstract class Party implements ChannelObserver {
     protected Product currentProduct;
     Reporter reporter = Reporter.getReporter();
 
+    /**
+     * Instantiates a new Party.
+     *
+     * @param name    the name
+     * @param balance the balance
+     * @param margin  the margin
+     */
     protected Party(String name, int balance, int margin) {
         if (margin > 100) {
             margin = margin % 100;
@@ -40,6 +50,14 @@ public abstract class Party implements ChannelObserver {
         this.blocks = new HashMap<>();
     }
 
+    /**
+     * For Disributor.
+     * He knows where to deliver so he can,
+     * add Process Transaction or Storage Transaction
+     * Add type of transaction.
+     *
+     * @param creator the creator
+     */
     public void addTypeofTransaction(Party creator) {
         if (this instanceof Processor) {
             productChannel.addProcessTransaction(creator, creator.currentProduct);
@@ -48,6 +66,13 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
+    /**
+     * Request paid boolean.
+     * Checks if request was paid or no;
+     *
+     * @param request the request
+     * @return the boolean
+     */
     protected boolean requestPaid(Request request) {
         for (Map.Entry<Transaction, Boolean> entry : blocks.entrySet()
         ) {
@@ -63,6 +88,12 @@ public abstract class Party implements ChannelObserver {
         return false;
     }
 
+    /**
+     * Fulfills request.
+     * Use to process request
+     *
+     * @param request the request
+     */
     public void fulfillRequest(Request request) {
         if (request.getPartyType() != this.getPartyType()) {
             System.out.println("You can't fulfill this request(wrong party type)");
@@ -71,6 +102,14 @@ public abstract class Party implements ChannelObserver {
         processRequest(request);
     }
 
+    /**
+     * For Distributor.
+     * He uses it to get product.
+     * Give product.
+     *
+     * @param receiver    the receiver
+     * @param productType the product type
+     */
     protected void giveProduct(Party receiver, ProductType productType) {
         for (Product p : products
         ) {
@@ -82,10 +121,23 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
+    /**
+     * Clear the counters.
+     * Method to clear List of products
+     * if there some products with amount = 0.
+     */
     protected void clearTheCounters() {
         this.products.removeIf(p -> p.getProductType().getQuantity() == 0);
     }
 
+    /**
+     * For Distributor.
+     * Helps distributor to give product to receiver
+     * USE: receiver.receiveProduct
+     * Receive product.
+     *
+     * @param product the product
+     */
     protected void receiveProduct(Product product) {
         if (this.products.contains(product)) {
             this.products.get(this.products.indexOf(product)).getProductType().addToCounters(product.getProductType().getQuantity());
@@ -94,14 +146,41 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
+    /**
+     * Gets party type.
+     *
+     * @return the party type
+     */
     public abstract PartyType getPartyType();
 
+    /**
+     * Process request.
+     * Checks if it can process request and
+     * if not it asks next(makes request)
+     *
+     * @param request the request
+     */
     protected abstract void processRequest(Request request);
 
+    /**
+     * Can process request boolean.
+     * Checks if this Party can process request
+     *
+     * @param request the request
+     * @return the boolean
+     */
     protected boolean canProcessRequest(Request request) {
         return request.getPartyType() == this.getPartyType();
     }
 
+    /**
+     * Product available boolean.
+     * if it is available it returns true
+     * and sets this current product from list of products
+     *
+     * @param request the request
+     * @return the boolean
+     */
     protected boolean productAvailable(Request request) {
         for (Product p : products
         ) {
@@ -112,19 +191,6 @@ public abstract class Party implements ChannelObserver {
             }
         }
         return false;
-    }
-
-    protected void sendRequest(ProductType productType) {
-        if (this.balance < productType.getCost()) {
-            System.out.println("You don't have enough money");
-            return;
-        }
-        if (productChannel != null) {
-            Request request = new Request(this, productType, this.getPartyType());
-            productChannel.addRequest(request);
-        } else {
-            System.out.println("You don't subscribed to product channel");
-        }
     }
 
     @Override
@@ -170,35 +236,68 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
+    /**
+     * Gets balance.
+     *
+     * @return the balance
+     */
     public float getBalance() {
         return balance;
     }
 
+    /**
+     * Sets balance.
+     *
+     * @param balance the balance
+     */
     protected void setBalance(int balance) {
         this.balance = balance;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets last transaction money.
+     *
+     * @return the last transaction money
+     */
     public Transaction getLastTransactionMoney() {
         return lastTransactionMoney;
     }
 
+    /**
+     * Gets last transaction product.
+     *
+     * @return the last transaction product
+     */
     protected Transaction getLastTransactionProduct() {
         return lastTransactionProduct;
     }
 
+    /**
+     * Gets products.
+     *
+     * @return the products
+     */
     protected List<Product> getProducts() {
         return products;
     }
 
+    /**
+     * Request payment.
+     * Makes new Payment and then uses update()
+     * to update purses of parties
+     *
+     * @param request the request
+     */
     public void requestPayment(Request request) {
-//        if(request.getRespondingParty() != this){
-//            System.out.println("You are not responsible for this request");
-//            return;
-//        }
         System.out.println("Requesting payment");
         if (moneyChannel == null) {
             moneyChannel = new MoneyChannel(TransactionType.MONEY);
@@ -215,14 +314,29 @@ public abstract class Party implements ChannelObserver {
         request.setPaid();
     }
 
+    /**
+     * Gets margin.
+     *
+     * @return the margin
+     */
     public int getMargin() {
         return margin;
     }
 
+    /**
+     * Gets money channel.
+     *
+     * @return the money channel
+     */
     protected MoneyChannel getMoneyChannel() {
         return moneyChannel;
     }
 
+    /**
+     * Gets blocks.
+     *
+     * @return the blocks
+     */
     protected Map<Transaction, Boolean> getBlocks() {
         return blocks;
     }

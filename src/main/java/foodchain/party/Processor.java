@@ -15,6 +15,7 @@ public class Processor extends Party {
      *
      * @param name    the name
      * @param balance the balance
+     * @param margin  the margin
      */
     public Processor(String name, int balance, int margin) {
         super(name, balance, margin);

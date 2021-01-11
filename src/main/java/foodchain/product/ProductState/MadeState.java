@@ -2,8 +2,16 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
+/**
+ * The type Made state.
+ */
 public class MadeState extends ProductState {
 
+    /**
+     * Instantiates a new Made state.
+     *
+     * @param product the product
+     */
     public MadeState(Product product) {
         super(product);
     }

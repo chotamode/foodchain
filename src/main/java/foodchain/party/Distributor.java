@@ -11,9 +11,19 @@ import foodchain.transactions.TransactionType;
 
 import java.util.Map;
 
+/**
+ * The type Distributor.
+ */
 public class Distributor extends Party {
     Reporter reporter = Reporter.getReporter();
 
+    /**
+     * Instantiates a new Distributor.
+     *
+     * @param name    the name
+     * @param balance the balance
+     * @param margin  the margin
+     */
     public Distributor(String name, int balance, int margin) {
         super(name, balance, margin);
     }

@@ -9,6 +9,13 @@ import foodchain.channels.util.Request;
 public class Seller extends Party {
     Reporter reporter = Reporter.getReporter();
 
+    /**
+     * Instantiates a new Seller.
+     *
+     * @param name    the name
+     * @param balance the balance
+     * @param margin  the margin
+     */
     public Seller(String name, int balance, int margin) {
         super(name, balance, margin);
     }

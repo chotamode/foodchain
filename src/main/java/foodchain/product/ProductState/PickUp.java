@@ -2,7 +2,15 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
+/**
+ * The type Pick up.
+ */
 public class PickUp extends ProductState {
+    /**
+     * Instantiates a new Pick up.
+     *
+     * @param product the product
+     */
     public PickUp(Product product) {
         super(product);
     }

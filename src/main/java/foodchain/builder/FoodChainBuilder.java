@@ -5,20 +5,29 @@ import foodchain.party.Party;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Food chain builder.
+ */
 public class FoodChainBuilder {
     private List<PartyBuilder> builders = new ArrayList<>();
 
+    /**
+     * Instantiates a new Food chain builder.
+     *
+     * @param config the config
+     */
     FoodChainBuilder(String config) {
         switch (config) {
-            case "A":
-                initA();
-                break;
-            case "B":
-                initB();
-                break;
+            case "A" -> initA();
+            case "B" -> initB();
         }
     }
 
+    /**
+     * Create system: creates list of all parties.
+     *
+     * @return the list of parties
+     */
     List<Party> createSystem() {
         List<Party> all = new ArrayList<>();
         for (PartyBuilder builder : builders) {

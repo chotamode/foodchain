@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * The type Reporter.
+ */
 public class Reporter {
     private static Reporter reporter;
     private static String partiesReport = "Parties Reports:\n\n";
@@ -17,6 +20,11 @@ public class Reporter {
     private Reporter() {
     }
 
+    /**
+     * Gets reporter.
+     *
+     * @return the reporter
+     */
     public static Reporter getReporter() {
         if (reporter == null) {
             reporter = new Reporter();
@@ -24,22 +32,47 @@ public class Reporter {
         return reporter;
     }
 
+    /**
+     * Adds parties report.
+     *
+     * @param info the info
+     */
     public void addPartiesReport(String info) {
         partiesReport += "Parties Report: " + info + "\n\n";
     }
 
+    /**
+     * Adds food chain report.
+     *
+     * @param info the info
+     */
     public void addFoodChainReport(String info) {
         foodChainReport += "FoodChain Report: " + info + "\n";
     }
 
+    /**
+     * Adds security report.
+     *
+     * @param info the info
+     */
     public void addSecurityReport(String info) {
         securityReport += "Security Report: " + info + "\n\n";
     }
 
+    /**
+     * Adds transaction report.
+     *
+     * @param info the info
+     */
     public void addTransactionReport(String info) {
         transactionReport += "Transaction Report: " + info + "\n\n";
     }
 
+    /**
+     * Change Path!!!
+     * Shows parties report.
+     * Write all report to PartiesReports.txt
+     */
     public void showPartiesReport() {
 //        System.out.println(partiesReport);
         try {
@@ -64,6 +97,11 @@ public class Reporter {
         }
     }
 
+    /**
+     * Change Path!!!
+     * Shows food chain report.
+     * Write all report to FoodChainReports.txt
+     */
     public void showFoodChainReport() {
 //        System.out.println(foodChainReport);
         try {
@@ -88,6 +126,11 @@ public class Reporter {
         }
     }
 
+    /**
+     * Change Path!!!
+     * Shows security report.
+     * Write all report to SecurityReports.txt
+     */
     public void showSecurityReport() {
 //        System.out.println(securityReport);
         try {
@@ -112,6 +155,11 @@ public class Reporter {
         }
     }
 
+    /**
+     * Change Path!!!
+     * Shows transaction report.
+     * Write all report to TransactionReports.txt
+     */
     public void showTransactionReport() {
 //        System.out.println(transactionReport);
         try {

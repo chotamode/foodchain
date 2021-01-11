@@ -6,6 +6,9 @@ import foodchain.product.Products.ProductType;
 
 import java.util.UUID;
 
+/**
+ * The type Sell transaction.
+ */
 public class SellTransaction extends Transaction {
 
     private final TransactionType type = TransactionType.SELL;
@@ -13,6 +16,15 @@ public class SellTransaction extends Transaction {
     private final UUID uuid;
     private final ProductType productType;
 
+    /**
+     * Instantiates a new Sell transaction.
+     *
+     * @param seller              the seller
+     * @param customer            the customer
+     * @param product             the product
+     * @param productType         the product type
+     * @param previousTransaction the previous transaction
+     */
     public SellTransaction(Party seller, Party customer, Product product, ProductType productType, Transaction previousTransaction) {
         super(seller, previousTransaction);
         this.receiver = customer;
@@ -20,10 +32,20 @@ public class SellTransaction extends Transaction {
         this.productType = productType;
     }
 
+    /**
+     * Gets receiver.
+     *
+     * @return the receiver
+     */
     public Party getReceiver() {
         return receiver;
     }
 
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
     public float getAmount() {
         return productType.getQuantity();
     }
@@ -33,10 +55,20 @@ public class SellTransaction extends Transaction {
         return type;
     }
 
+    /**
+     * Gets uuid.
+     *
+     * @return the uuid
+     */
     public UUID getUuid() {
         return uuid;
     }
 
+    /**
+     * Gets product type.
+     *
+     * @return the product type
+     */
     public ProductType getProductType() {
         return productType;
     }

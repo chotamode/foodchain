@@ -11,14 +11,19 @@ import java.util.List;
  * The interface Party observable.
  */
 public interface PartyObservable {
+
     Reporter reporter = Reporter.getReporter();
 
     /**
+     * Attach.
+     *
      * @param channelObserver the observer to attach
      */
     void attach(ChannelObserver channelObserver);
 
     /**
+     * Detach.
+     *
      * @param channelObserver the observer to detach
      */
     void detach(ChannelObserver channelObserver);
@@ -26,9 +31,17 @@ public interface PartyObservable {
 
     /**
      * Notifies all observing parties about changes in channel.
+     *
+     * @param request the request
      */
     void notifyAllParties(Request request);
 
+    /**
+     * Notify all parties.
+     *
+     * @param transaction the transaction
+     * @param subscribers the subscribers
+     */
     default void notifyAllParties(Transaction transaction, List<ChannelObserver> subscribers) {
         for (ChannelObserver o : subscribers
         ) {

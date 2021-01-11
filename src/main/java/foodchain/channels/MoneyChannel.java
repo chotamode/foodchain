@@ -5,8 +5,16 @@ import foodchain.channels.util.Request;
 import foodchain.transactions.MoneyTransaction;
 import foodchain.transactions.TransactionType;
 
+/**
+ * The type Money channel.
+ */
 public class MoneyChannel extends Channel {
 
+    /**
+     * Instantiates a new Money channel.
+     *
+     * @param type the type
+     */
     public MoneyChannel(TransactionType type) {
         super(type);
     }
@@ -16,6 +24,12 @@ public class MoneyChannel extends Channel {
         System.out.println("You can't send requests in Money Channel");
     }
 
+    /**
+     * Adds payment transaction to the linked list of
+     * transactions (each transaction has field previous transaction).
+     *
+     * @param payment the payment
+     */
     public void addPaymentTransaction(Payment payment) {
         if (payment.getSender().getBalance() < payment.getMoney()) {
             System.out.println(payment.getSender().getName() + " does not have enough money!");

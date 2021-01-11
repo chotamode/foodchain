@@ -2,8 +2,16 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
+/**
+ * The type Processing state.
+ */
 public class ProcessingState extends ProductState {
 
+    /**
+     * Instantiates a new Processing state.
+     *
+     * @param product the product
+     */
     public ProcessingState(Product product) {
         super(product);
     }

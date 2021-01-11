@@ -7,6 +7,12 @@ import foodchain.channels.util.Request;
  */
 public class Customer extends Party {
 
+    /**
+     * Instantiates a new Customer.
+     *
+     * @param name    the name
+     * @param balance the balance
+     */
     public Customer(String name, int balance) {
         super(name, balance, 0);
     }

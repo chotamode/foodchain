@@ -2,8 +2,16 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
+/**
+ * The type Stored state.
+ */
 public class StoredState extends ProductState {
 
+    /**
+     * Instantiates a new Stored state.
+     *
+     * @param product the product
+     */
     public StoredState(Product product) {
         super(product);
     }
