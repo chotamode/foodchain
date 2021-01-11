@@ -5,7 +5,9 @@ import foodchain.channels.util.Request;
 import foodchain.party.Party;
 import foodchain.party.PartyType;
 import foodchain.product.Product;
-import foodchain.product.Products.*;
+import foodchain.product.Products.MeatProducts;
+import foodchain.product.Products.MilkProducts;
+import foodchain.product.Products.ProductTypes;
 
 public class Farmer extends Party {
     private static final PartyType partyType = PartyType.FARMER;
@@ -13,16 +15,16 @@ public class Farmer extends Party {
     MilkFactory milkFactory = new MilkFactory();
     PlantFactory plantFactory = new PlantFactory();
 
+    public Farmer(String name, int balance, int margin) {
+        super(name, balance, margin);
+    }
+
     Product create(float q, ProductTypes productTypes) {
         if (productTypes instanceof MeatProducts) {
             return meatFactory.factoryMethod(q, productTypes);
         } else if (productTypes instanceof MilkProducts) {
             return milkFactory.factoryMethod(q, productTypes);
         } else return plantFactory.factoryMethod(q, productTypes);
-    }
-
-    public Farmer(String name, int balance, int margin) {
-        super(name, balance, margin);
     }
 
     @Override

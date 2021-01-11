@@ -4,7 +4,6 @@ import foodchain.party.ChannelObserver;
 import foodchain.party.Party;
 import foodchain.transactions.GenesisTransaction;
 import foodchain.transactions.Transaction;
-import foodchain.transactions.TransactionIterator;
 import foodchain.transactions.TransactionType;
 
 import java.util.HashMap;
@@ -20,13 +19,13 @@ public abstract class Channel implements PartyObservable {
     protected List<ChannelObserver> subscribers;
     protected Map<Party, Integer> doubleSpending = new HashMap<>();
 
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
     public Channel(TransactionType type) {
         this.subscribers = new LinkedList<>();
         this.transactionType = type;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
     @Override

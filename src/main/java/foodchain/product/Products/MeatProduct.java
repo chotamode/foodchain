@@ -3,9 +3,9 @@ package foodchain.product.Products;
 /**
  * The type Meat product.
  */
-public class MeatProduct extends ProductType{
+public class MeatProduct extends ProductType {
 
-    public MeatProduct(float Kg, MeatProducts meatProducts){
+    public MeatProduct(float Kg, MeatProducts meatProducts) {
         super(Kg, meatProducts);
     }
 

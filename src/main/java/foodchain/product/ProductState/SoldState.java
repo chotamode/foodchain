@@ -2,7 +2,7 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
-public class SoldState extends ProductState{
+public class SoldState extends ProductState {
 
     public SoldState(Product product) {
         super(product);
@@ -25,9 +25,9 @@ public class SoldState extends ProductState{
 
     @Override
     public void setSold() {
-        if(product.getProductState() instanceof SoldState){
+        if (product.getProductState() instanceof SoldState) {
             System.out.println(product.toString() + " SOLD!");
-        }else{
+        } else {
             product.setProductState(new SoldState(product));
         }
     }

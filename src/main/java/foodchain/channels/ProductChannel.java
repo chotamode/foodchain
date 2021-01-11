@@ -1,5 +1,6 @@
 package foodchain.channels;
 
+import foodchain.Reporter;
 import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Request;
 import foodchain.party.*;
@@ -9,7 +10,9 @@ import foodchain.product.ProductState.*;
 import foodchain.product.Products.ProductType;
 import foodchain.transactions.*;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The type Product channel.
@@ -17,6 +20,7 @@ import java.util.*;
 public class ProductChannel extends Channel {
 
     List<Request> requests = new LinkedList<>();
+    Reporter reporter = Reporter.getReporter();
 
     public ProductChannel(TransactionType type) {
         super(type);
@@ -46,17 +50,18 @@ public class ProductChannel extends Channel {
         }
         product.setProductState((new DeliveringState(product)));
 
-        if(receiver instanceof Customer){
+        if (receiver instanceof Customer) {
             product.getProductState().setSold();
-        }else if(receiver instanceof Seller){
+        } else if (receiver instanceof Seller) {
             product.getProductState().setPickUp();
-        }else if(receiver instanceof Processor){
+        } else if (receiver instanceof Processor) {
             product.getProductState().setProcessing();
-        }else if(receiver instanceof Storage){
+        } else if (receiver instanceof Storage) {
             product.getProductState().setStored();
-        }else if(receiver instanceof Farmer){
+        } else if (receiver instanceof Farmer) {
             product.getProductState().setMade();
         }
+        reporter.addFoodChainReport(product.getProductType().getProductTypes() + ": Delivering");
 
         receiver.addTypeofTransaction(creator);
 
@@ -76,6 +81,8 @@ public class ProductChannel extends Channel {
         }
         product.setProductState(new ProcessingState(product));
         product.getProductState().setDelivering();
+
+        reporter.addFoodChainReport(product.getProductType().getProductTypes() + ": Processing");
 
         lastTransaction = new ProcessTransaction(creator, product, lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
@@ -108,14 +115,17 @@ public class ProductChannel extends Channel {
                     } else {
                         doubleSpending.put(creator, 1);
                     }
-                    // GENERATE REPORT
-//                    return;
+                    reporter.addSecurityReport("Double-spending detected from: " + (transactionIterator.getTransaction()).getCreator() + "to: "
+                            + ((SellTransaction) transactionIterator.getTransaction()).getReceiver() + ": " + doubleSpending.get(creator) + " times");
+                        return;
                 }
             }
             transactionIterator.next();
         }
         product.setProductState(new SoldState(product));
         product.getProductState().setDelivering();
+
+        reporter.addFoodChainReport(product.getProductType().getProductTypes() + ": SOLD");
 
         lastTransaction = new SellTransaction(creator, receiver, product, productType, lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
@@ -136,6 +146,8 @@ public class ProductChannel extends Channel {
         product.setProductState(new StoredState(product));
         product.getProductState().setDelivering();
 
+        reporter.addFoodChainReport(product.getProductType().getProductTypes() + ": Stored");
+
         lastTransaction = new StoreTransaction(creator, product, lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
 
@@ -152,6 +164,9 @@ public class ProductChannel extends Channel {
         }
         product.setProductState(new MadeState(product));
         product.getProductState().setDelivering();
+
+        reporter.addFoodChainReport(product.getProductType().getProductTypes() + ": Created");
+
         lastTransaction = new CreateProductTransaction(creator, product, lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
 

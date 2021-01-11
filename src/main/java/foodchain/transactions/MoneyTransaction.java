@@ -25,10 +25,10 @@ public class MoneyTransaction extends Transaction {
 
     @Override
     public String toString() {
-        return "MoneyTransaction{" +
-                "money=" + money +
-                ", reciever=" + reciever +
-                ", creator=" + getCreator() +
+        return "{" +
+                "money = " + money +
+                ", creator = " + getCreator().getClass().getSimpleName() + ": " + getCreator().getName() +
+                ", reciever = " + reciever.getClass().getSimpleName() + ": " + reciever.getName() +
                 '}';
     }
 

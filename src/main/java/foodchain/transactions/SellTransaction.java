@@ -2,12 +2,11 @@ package foodchain.transactions;
 
 import foodchain.party.Party;
 import foodchain.product.Product;
-import foodchain.product.ProductState.ProductState;
 import foodchain.product.Products.ProductType;
 
 import java.util.UUID;
 
-public class SellTransaction extends Transaction{
+public class SellTransaction extends Transaction {
 
     private final TransactionType type = TransactionType.SELL;
     private final Party receiver;

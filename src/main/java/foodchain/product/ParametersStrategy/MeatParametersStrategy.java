@@ -6,7 +6,7 @@ import foodchain.product.Products.ProductTypes;
 /**
  * The type Meat parameters strategy.
  */
-public class MeatParametersStrategy implements ParametersStrategy{
+public class MeatParametersStrategy implements ParametersStrategy {
     private ProductTypes productType;
 
     /**

@@ -10,7 +10,7 @@ public abstract class ProductType {
     protected float quantity;
     protected final ProductTypes productTypes;
 
-    ProductType(float quantity, ProductTypes productTypes){
+    ProductType(float quantity, ProductTypes productTypes) {
         this.quantity = quantity;
         this.productTypes = productTypes;
     }
@@ -19,15 +19,15 @@ public abstract class ProductType {
 
     public abstract float getQuantity();
 
-    public void reduce(float amount){
+    public void reduce(float amount) {
         this.quantity = this.quantity - amount;
     }
 
-    public void addToCounters(float amount){
+    public void addToCounters(float amount) {
         this.quantity = this.quantity + amount;
     }
 
-    public float getCost(){
+    public float getCost() {
         return this.productTypes.getCost() * this.quantity;
     }
 }

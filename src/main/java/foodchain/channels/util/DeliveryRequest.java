@@ -4,7 +4,7 @@ import foodchain.party.Party;
 import foodchain.party.PartyType;
 import foodchain.product.Products.ProductType;
 
-public class DeliveryRequest extends Request{
+public class DeliveryRequest extends Request {
 
     private final Party receiver;
 

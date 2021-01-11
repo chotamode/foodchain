@@ -2,7 +2,7 @@ package foodchain.product.ProductState;
 
 import foodchain.product.Product;
 
-public class PickUp extends ProductState{
+public class PickUp extends ProductState {
     public PickUp(Product product) {
         super(product);
     }

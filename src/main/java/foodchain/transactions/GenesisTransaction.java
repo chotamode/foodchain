@@ -2,7 +2,7 @@ package foodchain.transactions;
 
 import foodchain.party.Party;
 
-public class GenesisTransaction extends Transaction{
+public class GenesisTransaction extends Transaction {
 
     private final TransactionType type = TransactionType.GENESIS;
 

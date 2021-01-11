@@ -6,7 +6,7 @@ import foodchain.product.Product;
 /**
  * The type Product transaction.
  */
-public class ProductTransaction extends Transaction{
+public class ProductTransaction extends Transaction {
 
     private final Product product;
     private final float amount;

@@ -1,12 +1,11 @@
 package foodchain.party;
 
+import foodchain.Reporter;
 import foodchain.channels.Channel;
 import foodchain.channels.MoneyChannel;
 import foodchain.channels.ProductChannel;
-import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
-import foodchain.party.farmer.Farmer;
 import foodchain.product.Product;
 import foodchain.product.Products.ProductType;
 import foodchain.transactions.MoneyTransaction;
@@ -16,17 +15,18 @@ import foodchain.transactions.TransactionType;
 import java.util.*;
 
 public abstract class Party implements ChannelObserver {
-    protected float balance;
-    protected final String name;
-    protected List<Product> products;
-    protected Queue<Request> requests;
     protected static MoneyChannel moneyChannel;
     protected static ProductChannel productChannel;
+    protected final String name;
+    private final int margin;
+    public Queue<Request> requests;
+    protected float balance;
+    public List<Product> products;
     protected Map<Transaction, Boolean> blocks; //payments transactions, boolean means if money accepted
     protected Transaction lastTransactionMoney = null;
     protected Transaction lastTransactionProduct = null;
-    private final int margin;
     protected Product currentProduct;
+    Reporter reporter = Reporter.getReporter();
 
     protected Party(String name, int balance, int margin) {
         if (margin > 100) {
@@ -40,10 +40,10 @@ public abstract class Party implements ChannelObserver {
         this.blocks = new HashMap<>();
     }
 
-    public void addTypeofTransaction(Party creator){
-        if(this instanceof Processor){
+    public void addTypeofTransaction(Party creator) {
+        if (this instanceof Processor) {
             productChannel.addProcessTransaction(creator, creator.currentProduct);
-        }else if(this instanceof Storage){
+        } else if (this instanceof Storage) {
             productChannel.addStoreTransaction(creator, creator.currentProduct);
         }
     }
@@ -63,7 +63,7 @@ public abstract class Party implements ChannelObserver {
         return false;
     }
 
-    protected void fulfillRequest(Request request) {
+    public void fulfillRequest(Request request) {
         if (request.getPartyType() != this.getPartyType()) {
             System.out.println("You can't fulfill this request(wrong party type)");
             return;
@@ -71,7 +71,7 @@ public abstract class Party implements ChannelObserver {
         processRequest(request);
     }
 
-    protected void giveProduct(Party receiver, ProductType productType){
+    protected void giveProduct(Party receiver, ProductType productType) {
         for (Product p : products
         ) {
             if (p.getProductType().getProductTypes() == productType.getProductTypes()
@@ -82,13 +82,14 @@ public abstract class Party implements ChannelObserver {
         }
     }
 
-    protected void clearTheCounters(){
+    protected void clearTheCounters() {
         this.products.removeIf(p -> p.getProductType().getQuantity() == 0);
     }
+
     protected void receiveProduct(Product product) {
-        if(this.products.contains(product)){
+        if (this.products.contains(product)) {
             this.products.get(this.products.indexOf(product)).getProductType().addToCounters(product.getProductType().getQuantity());
-        }else{
+        } else {
             this.products.add(product);
         }
     }
@@ -208,6 +209,8 @@ public abstract class Party implements ChannelObserver {
         Payment payment = new Payment(this,
                 request.getRespondingParty(),
                 request.getCost());
+        reporter.addPartiesReport(request.getRespondingParty().getClass().getSimpleName() + ": " + request.getRespondingParty().getName() + " asking ~ "
+                + (int) (request.getCost() - request.getProductType().getCost()) + " for his work");
         moneyChannel.addPaymentTransaction(payment);
         request.setPaid();
     }

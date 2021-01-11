@@ -3,7 +3,7 @@ package foodchain.product.Products;
 /**
  * The enum Meat products.
  */
-public enum MeatProducts implements ProductTypes{
+public enum MeatProducts implements ProductTypes {
 
     BEEF(100),
     PORK(60),

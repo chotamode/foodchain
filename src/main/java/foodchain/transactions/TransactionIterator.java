@@ -1,8 +1,6 @@
 package foodchain.transactions;
 
-import java.util.Iterator;
-
-public class TransactionIterator{
+public class TransactionIterator {
 
     private final Transaction root_transaction;
     private Transaction transaction;
@@ -17,7 +15,7 @@ public class TransactionIterator{
     }
 
     public void next() {
-        if(hasNext()){
+        if (hasNext()) {
             this.transaction = transaction.getPreviousTransaction();
         }
     }

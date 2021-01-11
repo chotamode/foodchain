@@ -1,27 +1,26 @@
 package foodchain.party;
 
+import foodchain.Reporter;
 import foodchain.channels.ProductChannel;
 import foodchain.channels.util.Request;
 import foodchain.party.farmer.Farmer;
-import foodchain.product.Product;
 import foodchain.product.Products.MeatProduct;
 import foodchain.product.Products.MeatProducts;
 import foodchain.transactions.TransactionType;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class StorageTest {
 
     @Test
     void processRequest() {
+        Reporter reporter = Reporter.getReporter();
         ProductChannel productChannel = new ProductChannel(TransactionType.PRODUCT);
         Party customer = new Customer("Sam", 10000);
         Party sellerMacro = new Seller("MACRO.Inc", 900, 70);
         Party sellerTesco = new Seller("TESCO.Inc", 900, 70);
         Party distributor1 = new Distributor("Taxi", 0, 20);
-        Party processor = new Processor("CeskaPosta", 0, 15);
-        Party storageMakro1 = new Storage("MakroStorage1", 500, 10);
+        Party processor = new Processor("CeskaPosta", 500, 15);
+        Storage storageMakro1 = new Storage("MakroStorage1", 500, 10);
         Party storageMakro2 = new Storage("MakroStorage2", 500, 10);
         Party storageTesco1 = new Storage("TescoStorage1", 500, 10);
         Party storageTesco2 = new Storage("TescoStorage2", 500, 10);
@@ -51,6 +50,10 @@ class StorageTest {
 
         //+++++++++++++++++++++++++++++++++++
 
+        processor.fulfillRequest(processor.requests.element());
+
+        //+++++++++++++++++++++++++++++++++++
+
         farmer.fulfillRequest(farmer.requests.remove());
 
         //+++++++++++++++++++++++++++++++++++
@@ -58,6 +61,13 @@ class StorageTest {
         distributor1.fulfillRequest(distributor1.requests.remove());
 
         //+++++++++++++++++++++++++++++++++++
+        processor.fulfillRequest(processor.requests.element());
+
+        //+++++++++++++++++++++++++++++++++++
+
+        distributor1.fulfillRequest(distributor1.requests.remove());
+
+
 
         storageMakro1.processRequest(storageMakro1.requests.remove());
 
@@ -73,6 +83,7 @@ class StorageTest {
 
         distributor1.fulfillRequest(distributor1.requests.remove());
 
+        reporter.showTransactionReport();
         //+++++++++++++++++++++++++++++++++++
         System.out.println("\nHo ho, the end!");
     }

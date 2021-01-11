@@ -3,7 +3,7 @@ package foodchain.builder;
 import foodchain.party.Party;
 import foodchain.party.Distributor;
 
-public class DistributorBuilder extends PartyBuilder{
+public class DistributorBuilder extends PartyBuilder {
     private final int balance;
     private final String name;
     private final int margin;

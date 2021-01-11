@@ -1,5 +1,6 @@
 package foodchain.channels.util;
 
+import foodchain.Reporter;
 import foodchain.party.Distributor;
 import foodchain.party.Party;
 import foodchain.party.PartyType;
@@ -10,6 +11,7 @@ public class Request {
     private final ProductType productType;
     private final PartyType partyType;//party that can fulfill this request
     private final Party creator;
+    Reporter reporter = Reporter.getReporter();
     private Party respondingParty;
     private Distributor respondingDistributor;
     private boolean paid = false;
@@ -21,24 +23,24 @@ public class Request {
         this.respondingParty = null;
     }
 
-    public void setRespondingParty(Party respondingParty) {
-        this.respondingParty = respondingParty;
-    }
-
     public Distributor getRespondingDistributor() {
         return respondingDistributor;
     }
 
     public void setRespondingDistributor(Distributor respondingDistributor) {
-        if(this.respondingDistributor == null){
+        if (this.respondingDistributor == null) {
             this.respondingDistributor = respondingDistributor;
-        }else{
+        } else {
             System.out.println("Someone already delivering this request");
         }
     }
 
     public Party getRespondingParty() {
         return respondingParty;
+    }
+
+    public void setRespondingParty(Party respondingParty) {
+        this.respondingParty = respondingParty;
     }
 
     public void setPaid() {
@@ -50,12 +52,12 @@ public class Request {
         return paid;
     }
 
-    public float getDeliveryCost(){
-        return productType.getCost() * ((float) 1 + (respondingDistributor.getMargin()/(float)100));
+    public float getDeliveryCost() {
+        return productType.getCost() * ((float) 1 + (respondingDistributor.getMargin() / (float) 100));
     }
 
-    public float getCost(){
-        return productType.getCost() * ((float) 1 + ((float)respondingParty.getMargin()/(float)100));
+    public float getCost() {
+        return productType.getCost() * ((float) 1 + ((float) respondingParty.getMargin() / (float) 100));
     }
 
     public ProductType getProductType() {

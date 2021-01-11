@@ -1,25 +1,26 @@
 package foodchain.party;
 
+import foodchain.Reporter;
 import foodchain.channels.MoneyChannel;
 import foodchain.channels.util.DeliveryRequest;
 import foodchain.channels.util.Payment;
 import foodchain.channels.util.Request;
-import foodchain.product.Product;
 import foodchain.transactions.MoneyTransaction;
 import foodchain.transactions.Transaction;
 import foodchain.transactions.TransactionType;
 
 import java.util.Map;
 
-public class Distributor extends Party{
+public class Distributor extends Party {
+    Reporter reporter = Reporter.getReporter();
 
     public Distributor(String name, int balance, int margin) {
         super(name, balance, margin);
     }
 
     @Override
-    public void requestPayment(Request request){
-        if(request.getRespondingDistributor()!= this){
+    public void requestPayment(Request request) {
+        if (request.getRespondingDistributor() != this) {
             System.out.println("You are not delivering this product.");
             return;
         }
@@ -58,30 +59,36 @@ public class Distributor extends Party{
     }
 
     @Override
-    public void processRequest(Request request){
+    public void processRequest(Request request) {
+        reporter.addFoodChainReport(this.getClass().getSimpleName() + ": " + this.name);
+        reporter.addPartiesReport("Distributor: " + this.getName() + " answered on request and will deliver product in nearest time");
         request.setRespondingDistributor(this);
         request.setRespondingParty(this);
         requestPayment(request);
-        if(!requestPaid(request)){
+        if (!requestPaid(request)) {
             System.out.println("Request is not paid.");
             return;
         }
 
         request.getCreator().giveProduct(this, request.getProductType());
+        reporter.addPartiesReport("Distributor: " + this.getName() + " got Product: "
+                + request.getProductType().getProductTypes() + " from: " + request.getCreator().getClass().getSimpleName());
 
-        if(!productAvailable(request)){
+        if (!productAvailable(request)) {
+            reporter.addPartiesReport("Distributor: " + this.getName() + " doesn't have enough of " + request.getProductType().getProductTypes());
             System.out.println(this.getName() + " don't have enough " + request.getProductType().getProductTypes());
         }
 
         productChannel.addDistributionTransaction(request.getCreator(),
-                ((DeliveryRequest)request).getReceiver(),
+                ((DeliveryRequest) request).getReceiver(),
                 this, currentProduct);
         deliverProduct(((DeliveryRequest) request).getReceiver());
     }
 
-    private void deliverProduct(Party receiver){
+    private void deliverProduct(Party receiver) {
         receiver.receiveProduct(currentProduct);
-
+        reporter.addPartiesReport("Distributor: " + this.getName() + " send Product to receiver: "
+                + receiver.getClass().getSimpleName() + ": " + receiver.getName());
         products.clear();
     }
 }

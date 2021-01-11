@@ -6,7 +6,7 @@ import foodchain.product.Products.ProductTypes;
 /**
  * The type Milk parameters strategy.
  */
-public class MilkParametersStrategy implements ParametersStrategy{
+public class MilkParametersStrategy implements ParametersStrategy {
     private ProductTypes productType;
 
     public MilkParametersStrategy(Product product) {

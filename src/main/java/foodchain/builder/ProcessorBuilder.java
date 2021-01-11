@@ -3,7 +3,7 @@ package foodchain.builder;
 import foodchain.party.Party;
 import foodchain.party.Processor;
 
-public class ProcessorBuilder extends PartyBuilder{
+public class ProcessorBuilder extends PartyBuilder {
     private final int balance;
     private final String name;
     private final int margin;
@@ -13,6 +13,7 @@ public class ProcessorBuilder extends PartyBuilder{
         this.balance = balance;
         this.margin = margin;
     }
+
     Party createParty() {
         return new Processor(name, balance, margin);
     }

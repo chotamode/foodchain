@@ -3,7 +3,7 @@ package foodchain.product.Products;
 /**
  * The enum Plant products.
  */
-public enum PlantProducts implements ProductTypes{
+public enum PlantProducts implements ProductTypes {
 
     TOMATOES(5),
     POTATOES(4),

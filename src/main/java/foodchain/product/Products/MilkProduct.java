@@ -3,9 +3,9 @@ package foodchain.product.Products;
 /**
  * The type Milk product.
  */
-public class MilkProduct extends ProductType{
+public class MilkProduct extends ProductType {
 
-    public MilkProduct(float Liters, MilkProducts milkProducts){
+    public MilkProduct(float Liters, MilkProducts milkProducts) {
         super(Liters, milkProducts);
     }
 

@@ -3,7 +3,7 @@ package foodchain.builder;
 import foodchain.party.Seller;
 import foodchain.party.Party;
 
-public class SellerBuilder extends PartyBuilder{
+public class SellerBuilder extends PartyBuilder {
     private final int balance;
     private final String name;
     private final int margin;
@@ -13,6 +13,7 @@ public class SellerBuilder extends PartyBuilder{
         this.balance = balance;
         this.margin = margin;
     }
+
     @Override
     Party createParty() {
         return new Seller(name, balance, margin);

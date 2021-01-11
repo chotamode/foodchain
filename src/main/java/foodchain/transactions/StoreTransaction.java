@@ -3,7 +3,7 @@ package foodchain.transactions;
 import foodchain.party.Party;
 import foodchain.product.Product;
 
-public class StoreTransaction extends Transaction{
+public class StoreTransaction extends Transaction {
 
 
     private final Product product;

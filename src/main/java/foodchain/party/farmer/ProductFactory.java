@@ -1,7 +1,7 @@
 package foodchain.party.farmer;
 
 import foodchain.product.Product;
-import foodchain.product.Products.*;
+import foodchain.product.Products.ProductTypes;
 
 /**
  * The type Product factory.

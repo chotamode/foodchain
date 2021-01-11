@@ -3,7 +3,7 @@ package foodchain.product.Products;
 /**
  * The enum Milk products.
  */
-public enum MilkProducts implements ProductTypes{
+public enum MilkProducts implements ProductTypes {
 
     MILK(20),
     YOGHURT(40),

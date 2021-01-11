@@ -6,5 +6,6 @@ import foodchain.product.Products.ProductTypes;
 public interface ParametersStrategy {
 
     ProductTypes getProductType();
+
     void setStorageParametersStrategy(Product product);
 }

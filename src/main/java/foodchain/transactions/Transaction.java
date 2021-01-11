@@ -21,9 +21,9 @@ public abstract class Transaction {
         this.timestamp = generateTimestamp();
         this.previousTransaction = previousTransaction;
         this.hashCode = this.hashCode();
-        if(previousTransaction == null && this instanceof GenesisTransaction){
+        if (previousTransaction == null && this instanceof GenesisTransaction) {
             this.previousHashCode = -1;
-        }else{
+        } else {
             assert previousTransaction != null;
             this.previousHashCode = previousTransaction.hashCode();
         }
@@ -64,4 +64,12 @@ public abstract class Transaction {
     }
 
     public abstract TransactionType getTransactionType();
+
+    @Override
+    public String toString() {
+        return "{" +
+                "creator = " + creator.getClass().getSimpleName() + ": " + creator.getName() +
+                ", timestamp = '" + timestamp + '\'' +
+                '}';
+    }
 }

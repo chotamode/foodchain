@@ -15,9 +15,14 @@ public abstract class ProductState {
     }
 
     public abstract void setDelivering();
+
     public abstract void setMade();
+
     public abstract void setProcessing();
+
     public abstract void setSold();
+
     public abstract void setStored();
+
     public abstract void setPickUp();
 }
