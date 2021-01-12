@@ -14,13 +14,20 @@ Funkcní požadavky:
     F10: (foodchain package) Reporter: addPartiesReport - showPartiesReport, addFoodChainReport - showFoodChainReport, addSecurityReport - showSecurityReport, addTransactionReport - showTransactionReport
 
 Nefunkční požadavky:
-    ●   Není požadována autentizace ani autorizace
-    ●	Není požadována autentizace ani autorizace
+    ●   Není autentizace ani autorizace
+
     ●	Aplikace nemá GUI. Aplikace komunikuje s uživatelem pomocí výpisů do souboru
-    ●	V systému neexistuje centrální autorita, přes kterou by se prováděly transakce. Aplikaci běží v jednom threadu, kdy se postupně aplikují všechny transakce provedené jednotlivými parties v rámci aktuálního kroku diskrétní simulace.
+
+    ●	V systému neexistuje centrální autorita, přes kterou by se prováděly transakce
+
+    ● Aplikaci běží v jednom threadu, kdy se postupně aplikují všechny transakce provedené jednotlivými parties v rámci aktuálního kroku diskrétní simulace.
+
     ●	Myslim ze všechno je dobře ukryté
+
     ●	Namísto PKI infrastruktury, public a private klíčů, šifrování/dešifrování pracujeme s Uuid. Každy product ma svoje Immutable Uuid(foodchain/Products package, Object Product)
+
     ●	Reporty jsou generovány do textového souboru
+    
     ●	Program běží v Mainu package builder
 
 
