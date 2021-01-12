@@ -14,6 +14,7 @@ Funkcní požadavky:
     F10: (foodchain package) Reporter: addPartiesReport - showPartiesReport, addFoodChainReport - showFoodChainReport, addSecurityReport - showSecurityReport, addTransactionReport - showTransactionReport
 
 Nefunkční požadavky:
+
     ●   Není autentizace ani autorizace
 
     ●	Aplikace nemá GUI. Aplikace komunikuje s uživatelem pomocí výpisů do souboru
