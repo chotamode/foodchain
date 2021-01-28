@@ -39,12 +39,12 @@ public class MoneyChannel extends Channel {
             System.out.println("Sender" + payment.getSender().getName() + " is not subscribed");
             return;
         }
-        if (!subscribers.contains(payment.getReciever())) {
-            System.out.println("Reciever" + payment.getReciever().getName() + " is not subscribed");
+        if (!subscribers.contains(payment.getReceiver())) {
+            System.out.println("Reciever" + payment.getReceiver().getName() + " is not subscribed");
             return;
         }
         this.lastTransaction = new MoneyTransaction(payment.getSender(),
-                payment.getReciever(), payment.getMoney(), this.lastTransaction);
+                payment.getReceiver(), payment.getMoney(), this.lastTransaction);
         notifyAllParties(lastTransaction, subscribers);
     }
 }

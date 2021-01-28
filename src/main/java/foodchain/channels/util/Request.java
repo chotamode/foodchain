@@ -14,10 +14,6 @@ public class Request {
     private final ProductType productType;
     private final PartyType partyType;
     private final Party creator;
-    /**
-     * The Reporter.
-     */
-    Reporter reporter = Reporter.getReporter();
     private Party respondingParty;
     private Distributor respondingDistributor;
     private boolean paid = false;

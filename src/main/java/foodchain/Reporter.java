@@ -1,6 +1,5 @@
 package foodchain;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -74,7 +73,6 @@ public class Reporter {
      * Write all report to PartiesReports.txt
      */
     public void showPartiesReport() {
-//        System.out.println(partiesReport);
         try {
             Files.deleteIfExists(Path.of("C:\\Users\\User\\IdeaProjects\\new-omo-foodchain\\PartiesReports.txt"));
         } catch (IOException e) {
@@ -103,7 +101,6 @@ public class Reporter {
      * Write all report to FoodChainReports.txt
      */
     public void showFoodChainReport() {
-//        System.out.println(foodChainReport);
         try {
             Files.deleteIfExists(Path.of("C:\\Users\\User\\IdeaProjects\\new-omo-foodchain\\FoodChainReports.txt"));
         } catch (IOException e) {
@@ -132,7 +129,6 @@ public class Reporter {
      * Write all report to SecurityReports.txt
      */
     public void showSecurityReport() {
-//        System.out.println(securityReport);
         try {
             Files.deleteIfExists(Path.of("C:\\Users\\User\\IdeaProjects\\new-omo-foodchain\\SecurityReports.txt"));
         } catch (IOException e) {
@@ -161,7 +157,6 @@ public class Reporter {
      * Write all report to TransactionReports.txt
      */
     public void showTransactionReport() {
-//        System.out.println(transactionReport);
         try {
             Files.deleteIfExists(Path.of("C:\\Users\\User\\IdeaProjects\\new-omo-foodchain\\TransactionReports.txt"));
         } catch (IOException e) {

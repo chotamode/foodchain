@@ -19,6 +19,15 @@ public class TransactionIterator {
     }
 
     /**
+     * Gets root transaction.
+     *
+     * @return the root transaction
+     */
+    public Transaction getRoot_transaction() {
+        return root_transaction;
+    }
+
+    /**
      * Has next boolean.
      * checks if this transaction is not null
      *

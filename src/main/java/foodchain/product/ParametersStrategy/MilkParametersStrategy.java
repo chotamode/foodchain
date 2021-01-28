@@ -7,7 +7,7 @@ import foodchain.product.Products.ProductTypes;
  * The type Milk parameters strategy.
  */
 public class MilkParametersStrategy implements ParametersStrategy {
-    private ProductTypes productType;
+    private final ProductTypes productType;
 
     public MilkParametersStrategy(Product product) {
         this.productType = product.getProductType().getProductTypes();

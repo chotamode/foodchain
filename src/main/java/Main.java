@@ -1,6 +1,5 @@
-package foodchain.builder;
-
 import foodchain.Reporter;
+import foodchain.builder.FoodChainBuilder;
 import foodchain.channels.ProductChannel;
 import foodchain.channels.util.Request;
 import foodchain.party.*;
@@ -20,29 +19,12 @@ public class Main {
 
         List<Party> all = foodChainBuilder.createSystem();
 
-        Party customer = null;
-        Seller sellerMacro = null;
-        Party distributor = null;
-        Party processor = null;
-        Storage storageMakro = null;
-        Party farmer = null;
-        for (Party p : all
-        ) {
-            productChannel.attach(p);
-            if (p instanceof Customer) {
-                customer = p;
-            } else if (p instanceof Seller) {
-                sellerMacro = (Seller) p;
-            } else if (p instanceof Distributor) {
-                distributor = p;
-            } else if (p instanceof Processor) {
-                processor = p;
-            } else if (p instanceof Storage) {
-                storageMakro = (Storage) p;
-            } else if (p instanceof Farmer) {
-                farmer = p;
-            }
-        }
+        Customer customer = foodChainBuilder.initializeCustomer(all, productChannel);
+        Seller sellerMacro = foodChainBuilder.initializeSeller(all, productChannel);
+        Distributor distributor = foodChainBuilder.initializeDistributor(all, productChannel);
+        Processor processor = foodChainBuilder.initializeProcessor(all, productChannel);
+        Storage storageMakro = foodChainBuilder.initializeStorage(all, productChannel);
+        Farmer farmer = foodChainBuilder.initializeFarmer(all, productChannel);
 
         Seller sellerTesco = new Seller("TESCO.Inc", 900, 70); // FOR DOUBLE-SPENDING PROBLEM
 

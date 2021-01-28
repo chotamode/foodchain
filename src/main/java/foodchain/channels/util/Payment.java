@@ -8,19 +8,19 @@ import foodchain.party.Party;
 public class Payment {
 
     private final Party sender;
-    private final Party reciever;
+    private final Party receiver;
     private final float money;
 
     /**
      * Instantiates a new Payment.
      *
      * @param sender   the sender
-     * @param reciever the reciever
+     * @param receiver the reciever
      * @param money    the money
      */
-    public Payment(Party sender, Party reciever, float money) {
+    public Payment(Party sender, Party receiver, float money) {
         this.sender = sender;
-        this.reciever = reciever;
+        this.receiver = receiver;
         this.money = money;
     }
 
@@ -38,8 +38,8 @@ public class Payment {
      *
      * @return the reciever
      */
-    public Party getReciever() {
-        return reciever;
+    public Party getReceiver() {
+        return receiver;
     }
 
     /**
