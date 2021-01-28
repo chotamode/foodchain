@@ -9,7 +9,6 @@ import foodchain.product.Product;
 public class CreateProductTransaction extends Transaction {
 
     private final Product product;
-
     private final TransactionType transactionType = TransactionType.CREATE_PRODUCT;
 
     /**

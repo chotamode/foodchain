@@ -1,14 +1,12 @@
 package foodchain.product.Products;
 
-import foodchain.product.Product;
-
 /**
  * The interface Product type.
  */
 public abstract class ProductType {
 
-    protected float quantity;
     protected final ProductTypes productTypes;
+    protected float quantity;
 
     /**
      * Instantiates a new Product type.

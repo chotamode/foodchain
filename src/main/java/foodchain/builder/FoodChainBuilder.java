@@ -3,7 +3,6 @@ package foodchain.builder;
 import foodchain.channels.ProductChannel;
 import foodchain.party.*;
 import foodchain.party.farmer.Farmer;
-import foodchain.transactions.TransactionType;
 
 import java.util.ArrayList;
 import java.util.List;

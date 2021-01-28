@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * The type Sell transaction.
  */
-public class SellTransaction extends Transaction {
+    public class SellTransaction extends Transaction {
 
     private final TransactionType type = TransactionType.SELL;
     private final Party receiver;
