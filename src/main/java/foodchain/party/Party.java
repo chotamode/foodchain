@@ -52,6 +52,7 @@ public abstract class Party implements ChannelObserver {
 
     /**
      * For Disributor.
+     *
      * He knows where to deliver so he can,
      * add Process Transaction or Storage Transaction
      * Add type of transaction.
@@ -82,10 +83,10 @@ public abstract class Party implements ChannelObserver {
                     && request.getCost() == ((MoneyTransaction) entry.getKey()).getMoney()
                     && !entry.getValue()) {
                 entry.setValue(true);
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
