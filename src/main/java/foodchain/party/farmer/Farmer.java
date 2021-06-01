@@ -53,7 +53,7 @@ public class Farmer extends Party {
     public void processRequest(Request request) {
         request.setRespondingParty(this);
         request.getCreator().requestPayment(request);
-        if (!requestPaid(request)) {
+        if (requestPaid(request)) {
             System.out.println("Request is not paid.");
             return;
         }

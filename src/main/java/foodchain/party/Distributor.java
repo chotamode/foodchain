@@ -57,10 +57,10 @@ public class Distributor extends Party {
                     && request.getCost() == ((MoneyTransaction) entry.getKey()).getMoney()
                     && !entry.getValue()) {
                 entry.setValue(true);
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Distributor extends Party {
         request.setRespondingDistributor(this);
         request.setRespondingParty(this);
         requestPayment(request);
-        if (!requestPaid(request)) {
+        if (requestPaid(request)) {
             System.out.println("Request is not paid.");
             return;
         }

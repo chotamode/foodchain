@@ -36,7 +36,7 @@ public class Processor extends Party {
             reporter.addPartiesReport("Processor: " + this.getName() + " has product now and he is preparing it for delivery");
             request.setRespondingParty(this);
             request.getCreator().requestPayment(request);
-            if (!requestPaid(request)) {
+            if (requestPaid(request)) {
                 System.out.println("Request is not paid.");
                 return;
             }
